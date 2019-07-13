@@ -18,7 +18,7 @@
 							</ul>
 						</div>
 					@endif
-					<form action= "{{ route('home.store') }}" method="post">
+					<form action= "{{ route('home.store') }}" method="post" enctype="multipart/form-data">
 						{{ csrf_field() }}
 						<div class="form-group">
 							<label for="nik">NIK: </label>
@@ -92,8 +92,12 @@
 							<label for="foto_bersamaktp">Foto Bersama KTP: </label>
 							<input type="file" class="form-control" id="foto_bersamaktp" name="foto_bersamaktp"></input>
 						</div>
+						<div class="form-group">
+							<label for="password">Password: </label>
+							<input type="password" class="form-control" id="password" name="password"></input>
+						</div>
 						<br>
-						<button type="submit" class="btn btn-primary">Tambah</input>
+						<button type="submit" class="btn btn-primary">Daftar</input>
 					</form>
                 </div>
             </div>
