@@ -10,5 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/','Home\HomeController@index')->name('landing.index');
+Route::get('/','Website\Home\HomeController@index')->name('landing.index');
+Route::post('/','Website\Home\HomeController@store')->name('home.store');
 Route::resource('pengguna','Pengguna\PenggunaController');

@@ -35,7 +35,7 @@ class CreatePenggunaTable extends Migration
             $table->string('foto_ktp');
             $table->string('foto_bersamaktp');
             $table->string('qrcode_id');
-            $table->string('uid_kartu');
+            $table->string('uid_kartu')->nullable();
             $table->timestamps();
         });
     }
