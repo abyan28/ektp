@@ -236,6 +236,7 @@
 							<div class="controls">
                                 <select class="form-control" id="gol_darah" name="gol_darah" required>
                                     <option>Silahkan Pilih Golongan Darah</option>
+									<option value="A">-</option>
 									<option value="A">A</option>
 									<option value="AB">AB</option>
 									<option value="B">B</option>
