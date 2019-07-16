@@ -19,4 +19,7 @@ Route::get('qrcode',function(){
 	return view('website.qrcode.qrcode');
 });
 Route::post('/','Website\Home\HomeController@store')->name('home.store');
+Route::get('/cities/{id}','Website\Home\HomeController@getCities')->name('home.cities');
+Route::get('/districts/{id}','Website\Home\HomeController@getDistricts')->name('home.districts');
+Route::get('/subdistricts/{id}','Website\Home\HomeController@getSubDistricts')->name('home.subdistricts');
 Route::resource('pengguna','Pengguna\PenggunaController');

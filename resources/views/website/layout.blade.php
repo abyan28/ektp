@@ -21,5 +21,6 @@
 </head>
 <body>
 	@yield('content')
+	@include('website.partials.scripts')
 </body>
 </html>
