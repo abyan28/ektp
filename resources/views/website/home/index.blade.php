@@ -187,6 +187,7 @@
 @stop
 
 @section('content')
+
 <br>
 <br>
 <br>
@@ -195,7 +196,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card h-100">
-                <div class="card-header">Daftar</div>
+                <div class="card-header">Daftar JUSTAP</div>
 
                 <div class="card-body">
                     

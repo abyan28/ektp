@@ -19,7 +19,11 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body style="background: url({{asset('static/website/img/background.jpg')}}) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;">
 	@yield('content')
 	@include('website.partials.scripts')
 </body>
