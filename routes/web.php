@@ -22,4 +22,9 @@ Route::post('/','Website\Home\HomeController@store')->name('home.store');
 Route::get('/cities/{id}','Website\Home\HomeController@getCities')->name('home.cities');
 Route::get('/districts/{id}','Website\Home\HomeController@getDistricts')->name('home.districts');
 Route::get('/subdistricts/{id}','Website\Home\HomeController@getSubDistricts')->name('home.subdistricts');
+Route::get('/home','Pendaftaran\Home\HomeController@index')->name('pendaftaran.index');
+Route::get('/login','Pendaftaran\Auth\LoginController@index')->name('login.index');
+Route::post('/login','Pendaftaran\Auth\LoginController@store')->name('login.store');
 Route::resource('pengguna','Pengguna\PenggunaController');
+
+Route::get('/tap/{id}', 'Tap\Tap\TappingController@tapCard')->name('tap.process');

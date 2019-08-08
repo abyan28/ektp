@@ -47,7 +47,7 @@ class HomeController extends Controller
 			'kecamatan' => 'required',
 			'desa' => 'required',
 			'agama' => 'required|max:20',
-			'status_perkawinan' => 'required|max:5',
+			'status_perkawinan' => 'required|max:20',
 			'pekerjaan' => 'required|max:30',
 			'kewarganegaraan' => 'required|max:5',
 			'gol_darah' => 'required|max:2',
@@ -56,7 +56,6 @@ class HomeController extends Controller
 			'password' => 'required'
 		], $messages);
 		
-		$request->password = bcrypt($request->password);
 		
 		$ktppath = $request->file('foto_ktp')->store('daftar/fotoktp');
 		$bersamaktppath = $request->file('foto_bersamaktp')->store('daftar/fotobersamaktp');
@@ -70,6 +69,8 @@ class HomeController extends Controller
 		$upload['kota'] = Kota::find($request->kota)->nama;
 		$upload['kecamatan'] = Kecamatan::find($request->kecamatan)->nama;
 		$upload['desa'] = Desa::find($request->desa)->nama;
+		$upload['password'] = bcrypt($request->password);
+		$upload['status'] = 0;
 		
 		$data['qrcode'] = $qrcodestr;
 		
