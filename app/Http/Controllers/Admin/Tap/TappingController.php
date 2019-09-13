@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Tap\Tap;
+namespace App\Http\Controllers\Admin\Tap;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Pengguna;
 use App\Models\Logs;
-use App\Models\Kartu;
-use App\Models\Alat;
-use App\Models\Pendaftaran;
 
 class TappingController extends Controller
 {
@@ -95,12 +92,10 @@ class TappingController extends Controller
 		$logs = new Logs();
 		if($pengguna)
 		{
-			$logs['hasil'] = 0;
-			$logs['uid_kartu'] = $id;
-			$logs['nama'] = $pengguna['nama'];
-			$logs['tipe_kartu'] = 'detectable';
-			$logs['ruangan'] = 'LAB MI';
-			$logs->save();
+			$logs = new Logs();
+			$logdata['hasil'] = 1;
+			$logdata['uid_kartu'] = $id;
+			$logs->create($logdata->all());
 			return response()->json(['hasil' => 'ditemukan', 'data' => $pengguna]);
 		}
 		else
@@ -108,12 +103,9 @@ class TappingController extends Controller
 			$pengguna = Pengguna::where('status', '=', 1)->first();
 			if($pengguna)
 			{
-				$logs['hasil'] = 2;
-				$logs['uid_kartu'] = $id;
-				$logs['nama'] = $pengguna['nama'];
-				$logs['tipe_kartu'] = 'detectable';
-				$logs['ruangan'] = 'LAB MI';
-				$logs->save();
+				$logdata['hasil'] = 2;
+				$logdata['uid_kartu'] = $id;
+				$logs->create($logdata->all());
 				$pengguna->status = 2;
 				$pengguna->uid_kartu = $id;
 				$pengguna->save();
@@ -121,13 +113,9 @@ class TappingController extends Controller
 			}
 			else
 			{
-				
-				$logs['hasil'] = 0;
-				$logs['uid_kartu'] = $id;
-				$logs['nama'] = 'Tak Dikenal';
-				$logs['tipe_kartu'] = 'detectable';
-				$logs['ruangan'] = 'LAB MI';
-				$logs->save();
+				$logdata['hasil'] = 0;
+				$logdata['uid_kartu'] = $id;
+				$logs->create($logdata->all());
 				return response()->json(['hasil' => 'tak dikenal', 'data' => $pengguna]);
 			}
 		}
@@ -155,90 +143,6 @@ class TappingController extends Controller
 			else
 			{
 				return response()->json(['hasil' => 'tak dikenal', 'data' => $pengguna]);
-			}
-		}
-		
-	}
-	public function tapCardMulti($id, $uid)
-	{
-		$kartu = Kartu::where('uid', '=', $uid)->first();
-		$found = 0;
-		$logs = new Logs();
-		if($kartu)
-		{
-			$logs['hasil'] = 1;
-			$logs['uid_kartu'] = $uid;
-			$logs['nama'] = $kartu->pengguna->nama;
-			$logs['tipe_kartu'] = $kartu->tipe;
-			$logs['ruangan'] = Alat::find($id)->ruang->nama;
-			$roomid = Alat::find($id)->ruang->id;
-			$found = 0;
-			foreach($kartu->pengguna->ruangs as $ruang)
-			{
-				if($ruang->id == $roomid)
-				{
-					$found = 1;
-				}
-			}
-			if($found == 1)
-			{
-				$logs['hasil'] = 1;
-				$logs->save();
-				return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna]);
-			}
-			else
-			{
-				$logs['hasil'] = 0;
-				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
-			}
-			
-		}
-		else
-		{
-			$pendaftaran = Pendaftaran::where('alat_id', '=', $id)->first();
-			if($pendaftaran)
-			{
-				$kartus = (Pengguna::find($pendaftaran->pengguna->id))->kartus;
-				$kartu = new Kartu();
-				foreach($kartus as $card)
-				{
-					if($card->tipe == $pendaftaran->tipe)
-					{
-						$found = 1;
-						$card->uid = $uid;
-						$card->save();
-						$kartu = $card;
-						break;
-					}
-				}
-				if($found == 0)
-				{
-					
-					$kartu->pengguna_id = $pendaftaran->pengguna->id;
-					$kartu->uid = $uid;
-					$kartu->tipe = $pendaftaran->tipe;
-					$kartu->save();
-				}
-				$logs['hasil'] = 2;
-				$logs['uid_kartu'] = $uid;
-				$logs['nama'] = $kartu->pengguna->nama;
-				$logs['tipe_kartu'] = $kartu->tipe;;
-				$logs['ruangan'] = Alat::find($id)->ruang->nama;
-				$logs->save();
-				$pendaftaran->delete();
-				return response()->json(['hasil' => 'pendaftaran berhasil', 'data' => $kartu->pengguna]);
-			}
-			else
-			{
-				
-				$logs['hasil'] = 0;
-				$logs['uid_kartu'] = $uid;
-				$logs['nama'] = 'Tak Dikenal';
-				$logs['tipe_kartu'] = 'Tak Diketahui';
-				$logs['ruangan'] = Alat::find($id)->ruang->nama;;
-				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
 			}
 		}
 		

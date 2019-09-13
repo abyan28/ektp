@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Website\Home;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Pengguna;
-use App\Models\Provinsi;
-use App\Models\Desa;
-use App\Models\Kecamatan;
-use App\Models\Kota;
+//use App\Models\Provinsi;
+//use App\Models\Desa;
+//use App\Models\Kecamatan;
+//use App\Models\Kota;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
     //
@@ -25,62 +26,79 @@ class HomeController extends Controller
 	public function index()
     {
         //
-		$data['provinces'] = Provinsi::all();
-		return view('website.home.index', $data);
+		return view('website.home.index');
+    }
+	public function daftar()
+    {
+        //
+		return view('website.home.daftar');
+    }
+	public function about()
+    {
+        //
+		return view('website.home.about');
+    }
+	public function tatacara()
+    {
+        //
+		return view('website.home.tatacara');
     }
 	
 	public function store(Request $request)
 	{
+		//return "masuk";
+		$attributes = [
+        'nama' => "Nama",
+		'id_nik' => "NIK",
+		'nrp' => "NRP",
+		'nohp' => "Nomor HP",
+		'alamat' => "Alamat",
+		'email' => "Email",
+		'password' => "Password",
+		'jenis_kelamin' => "Jenis Kelamin"
+		];
 		$messages = [
 			'required' => ':attribute Wajib Diisi',
 			'min' => ':attribute harus diisi minimal :min karakter!',
 			'max' => ':attribute Wajib Diisi maximal :max karakter!'
 		];
-		$request->validate([
+		$rules = [
 			'id_nik' => 'required|min:16|max:16',
 			'nama' => 'required|max:50',
-			'tempat_lahir' => 'required|max:50',
-			'tanggal_lahir' => 'required',
 			'jenis_kelamin' => 'required|max:10',
-			'provinsi' => 'required',
-			'kota' => 'required',
-			'kecamatan' => 'required',
-			'desa' => 'required',
-			'agama' => 'required|max:20',
-			'status_perkawinan' => 'required|max:20',
-			'pekerjaan' => 'required|max:30',
-			'kewarganegaraan' => 'required|max:5',
-			'gol_darah' => 'required|max:2',
-			'foto_ktp' => 'required|image',
-			'foto_bersamaktp' => 'required|image',
-			'password' => 'required'
-		], $messages);
+			'nrp' => "required|min:14|max:14",
+			'nohp' => "required",
+			'alamat' => "required",
+			'email' => "required",
+			'password' => "required"
+		];
+		
+		$validator = Validator::make($request->all(), $rules, $messages, $attributes);
+		if ($validator->fails()) {
+            return redirect()->route('landing.daftar')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 		
 		
-		$ktppath = $request->file('foto_ktp')->store('daftar/fotoktp');
-		$bersamaktppath = $request->file('foto_bersamaktp')->store('daftar/fotobersamaktp');
 		
-		$qrcodestr = Crypt::encryptString($request->id_nik);
 		//return($request->desa);
-		$upload['foto_ktp'] = $ktppath;
-		$upload['foto_bersamaktp'] = $bersamaktppath;
-		$upload['qrcode_id'] = $qrcodestr;
-		$upload['provinsi'] = Provinsi::find($request->provinsi)->nama;
-		$upload['kota'] = Kota::find($request->kota)->nama;
-		$upload['kecamatan'] = Kecamatan::find($request->kecamatan)->nama;
-		$upload['desa'] = Desa::find($request->desa)->nama;
+		
 		$upload['password'] = bcrypt($request->password);
 		$upload['status'] = 0;
 		
-		$data['qrcode'] = $qrcodestr;
 		
-		$this->pengguna->create($request->except('foto_ktp', 'foto_bersamaktp', 'qrcode_id', 'provinsi' , 'kota', 'kecamatan', 'desa') + $upload);
+		if($this->pengguna->create($request->except('password', 'status') + $upload))
+		{
+			return redirect()->route('landing.index')->with(['status' => 'success', 'message' => 'Pendaftaran Biodata Berhasil']);
+		}
+		return redirect()->route('landing.daftar')->with(['status' => 'danger', 'message' => 'Pendaftaran Biodata Gagal, cek lagi NRP dan NIK']);
 		
-		return view('website.qrcode.qrcode', $data);
+		
 		
 		
 	}
-	
+	/*
 	public function getCities(Request $request)
 	{
 		$cities = Kota::where('id_provinsi', $request->id)->get();
@@ -108,4 +126,6 @@ class HomeController extends Controller
 		}
 		return response()->json(['success' => false]);
 	}
+	*/
+	
 }

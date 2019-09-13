@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDesasTable extends Migration
+class CreateKartusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateDesasTable extends Migration
      */
     public function up()
     {
-        Schema::create('desas', function (Blueprint $table) {
+        Schema::create('kartus', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nama', 50);
-			$table->unsignedBigInteger('id_kecamatan');
-			$table->foreign('id_kecamatan')->references('id')->on('kecamatans')->onDelete('cascade');
+			$table->unsignedBigInteger('pengguna_id');
+			$table->string('uid',100)->unique();
+			$table->string('tipe',50);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateDesasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('desas');
+        Schema::dropIfExists('kartus');
     }
 }

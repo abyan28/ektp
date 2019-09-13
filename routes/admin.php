@@ -25,6 +25,10 @@ Route::group(['prefix' => 'admin-panel', 'namespace' => 'Admin', 'as' => 'admin.
         Route::get('/', 'Home\HomeController@index')->name('index');
 		Route::post('/daftar/show', 'Pendaftaran\PendaftaranController@show')->name('pendaftaran.show');
 		Route::post('/daftar/buka', 'Pendaftaran\PendaftaranController@buka')->name('pendaftaran.buka');
+		Route::get('/daftar/tutup/{id}', 'Pendaftaran\PendaftaranController@tutup')->name('pendaftaran.tutup');
+		Route::get('/daftar/tutup/{id}', 'Pendaftaran\PendaftaranController@tutup')->name('pendaftaran.close');
+		Route::get('/daftar/antri', 'Pendaftaran\PendaftaranController@antri')->name('pendaftaran.antri');
+		Route::get('/logs', 'Tap\TappingController@showLogs')->name('logs.all');
 		/*
         Route::resource('category_gallery', 'Gallery\CategoryGalleryController');
         Route::resource('gallery', 'Gallery\ImageController');

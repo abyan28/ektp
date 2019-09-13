@@ -12,6 +12,11 @@
                 <a class="nav-link" href="{{ route('admin.index') }}">
                     <i class="nav-icon icon-globe-alt"></i> Pendaftaran</a>
             </li>
+			<li class="nav-title">History</li>
+			<li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.logs.all') }}">
+                    <i class="nav-icon icon-globe-alt"></i> History Tapping</a>
+            </li>
 			
         </ul>
     </nav>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKecamatansTable extends Migration
+class CreateLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateKecamatansTable extends Migration
      */
     public function up()
     {
-        Schema::create('kecamatans', function (Blueprint $table) {
-            $table->bigIncrements('id');
-			$table->string('nama', 50);
-			$table->unsignedBigInteger('id_kota');
-			$table->foreign('id_kota')->references('id')->on('kotas')->onDelete('cascade');
+        Schema::create('logs', function (Blueprint $table) {
+			$table->string('uid_kartu', 100);
+			$table->string('nama', 100);
+			$table->string('tipe_kartu', 100);
+			$table->string('ruangan', 100);
+			$table->tinyInteger('hasil');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateKecamatansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kecamatans');
+        Schema::dropIfExists('logs');
     }
 }

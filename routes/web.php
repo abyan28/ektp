@@ -11,6 +11,9 @@
 |
 */
 Route::get('/','Website\Home\HomeController@index')->name('landing.index');
+Route::get('/howto','Website\Home\HomeController@tatacara')->name('landing.tatacara');
+Route::get('/about','Website\Home\HomeController@about')->name('landing.about');
+Route::get('/register','Website\Home\HomeController@daftar')->name('landing.daftar');
 Route::get('qrcode',function(){
 	\QrCode::size(500)
             ->format('png')
@@ -18,7 +21,7 @@ Route::get('qrcode',function(){
     
 	return view('website.qrcode.qrcode');
 });
-Route::post('/','Website\Home\HomeController@store')->name('home.store');
+Route::post('/store','Website\Home\HomeController@store')->name('home.storing');
 Route::get('/cities/{id}','Website\Home\HomeController@getCities')->name('home.cities');
 Route::get('/districts/{id}','Website\Home\HomeController@getDistricts')->name('home.districts');
 Route::get('/subdistricts/{id}','Website\Home\HomeController@getSubDistricts')->name('home.subdistricts');
@@ -28,3 +31,5 @@ Route::post('/login','Pendaftaran\Auth\LoginController@store')->name('login.stor
 Route::resource('pengguna','Pengguna\PenggunaController');
 
 Route::get('/tap/{id}', 'Tap\Tap\TappingController@tapCard')->name('tap.process');
+Route::get('/tap/multi/{id}/{uid}', 'Tap\Tap\TappingController@tapCardMulti')->name('tap.multi');
+Route::post('/tap', 'Tap\Tap\TappingController@tapCardPost')->name('tap.post');

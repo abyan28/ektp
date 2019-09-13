@@ -24,6 +24,25 @@
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;">
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+<a class="navbar-brand" href="{{route('landing.index')}}">
+    <img src="{{asset('static/website/img/logo.jpg')}}" alt="Logo" style="width:70px;">
+  </a>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('landing.index')}}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('landing.about')}}">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('landing.tatacara')}}">Tata Cara</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('landing.daftar')}}">Pendaftaran</a>
+    </li>
+  </ul>
+</nav>
 	@yield('content')
 	@include('website.partials.scripts')
 </body>

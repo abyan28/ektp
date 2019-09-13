@@ -12,10 +12,9 @@ class Pengguna extends Authenticatable
 {
 	use Notifiable;
 	protected $guard = 'pendaftar';
-    protected $fillable = ['id_nik', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'rt_rw', 'provinsi', 
-    'kota', 'kecamatan', 'desa', 'agama', 'status_perkawinan', 'pekerjaan', 'kewarganegaraan', 'gol_darah',
-    'password', 'foto_ktp', 'foto_bersamaktp', 'qrcode_id', 'uid_kartu', 'status'];
-	
+    protected $fillable = ['id_nik', 'nama', 'nrp', 'nohp', 'jenis_kelamin', 'alamat', 'email',
+    'password', 'uid_kartu', 'status'];
+	/*
 	public function showKtp ()
     {
         if (Storage::exists($this->foto_ktp)) {
@@ -31,6 +30,18 @@ class Pengguna extends Authenticatable
         }
         return asset('static/admin/img/default.png');
     }
-	
+	*/
+	public function kartus()
+    {
+        return $this->hasMany('App\Models\Kartu');
+    }
+	public function pendaftarans()
+    {
+        return $this->hasMany('App\Models\Pendaftaran');
+    }
+	public function ruangs()
+    {
+        return $this->belongsToMany('App\Models\Ruang');
+    }
 	
 }

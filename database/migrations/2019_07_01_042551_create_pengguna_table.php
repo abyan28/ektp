@@ -15,28 +15,16 @@ class CreatePenggunaTable extends Migration
     {
         Schema::create('penggunas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('id_nik',16);
+            $table->string('id_nik',16)->unique();
             $table->string('nama',50);
-            $table->string('tempat_lahir',50);
-            $table->date('tanggal_lahir');
-            $table->string('jenis_kelamin',10);
+			$table->string('nrp',14)->unique();
+			$table->string('jenis_kelamin',10);
             $table->string('alamat',100);
-            $table->string('rt_rw',10);
-            $table->string('provinsi',50);
-            $table->string('kota',50);
-            $table->string('kecamatan',50);
-            $table->string('desa',50);
-            $table->string('agama',20);
-            $table->string('status_perkawinan',5);
-            $table->string('pekerjaan',30);
-            $table->string('kewarganegaraan',5);
-            $table->string('gol_darah',2);
-            $table->string('password',255);
-            $table->string('foto_ktp');
-            $table->string('foto_bersamaktp');
-            $table->string('qrcode_id');
-            $table->string('uid_kartu')->nullable();
-			$table->int('status');
+			$table->string('nohp',20)->unique();
+			$table->string('email',75)->unique();
+			$table->string('password',200);
+            $table->string('uid_kartu', 100)->nullable();
+			$table->tinyInteger('status');
             $table->timestamps();
         });
     }

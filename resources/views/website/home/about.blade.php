@@ -6,19 +6,21 @@
 
 @section('content')
 
-
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="card h-100">
-                
 
                 <div class="card-body">
-					@if (Session::has('status'))
-                        <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
-                    @endif
-                    <h3>Welcome to Justap</h3>
-					
+                    
+					@if (count($errors) > 0)
+						@foreach ($errors->all() as $error)	
+						<div class="alert alert-danger">
+							{{ $error }}
+						</div>
+						@endforeach
+					@endif
+					<h3>Tentang Justap</h3>
                 </div>
             </div>
         </div>

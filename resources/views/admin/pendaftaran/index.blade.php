@@ -37,63 +37,101 @@
                         @endforeach
                     @endif
 					<div class="row">
-						<div class="col-md-2">
-							<h4>NIK</h4>
-							<h6>Nama</h6>
-							<h6>Tempat/Tgl Lahir</h6>
-							<br>
-							<h6>Jenis Kelamin</h6>
-							<h6>Alamat</h6>
-							<h6>	RT/RW</h6>
-							<h6>	Kel/Desa</h6>
-							<h6>	Kecamatan</h6>
-							<h6>Agama</h6>
-							<h6>Status Perkawinan</h6>
-							<h6>Pekerjaan</h6>
-							<h6>Kewarganegaraan</h6>
+						<div class="col-md-5">
+							<table>
+								<tr>
+									<td>NIK</td>
+									<td>: {{$model->id_nik}}</td>
+								</tr>
+								<tr>
+									<td>Nama</td>
+									<td>: {{$model->nama}}</td>
+								</tr>
+								<tr>
+									<td>NRP</td>
+									<td>: {{$model->nrp}}</td>
+								</tr>
+								<tr>
+									<td>Jenis Kelamin</td>
+									<td>: {{$model->jenis_kelamin}}</td>
+								</tr>
+								<tr>
+									<td>Alamat</td>
+									<td>: {{$model->alamat}}</td>
+								</tr>
+								<tr>
+									<td>Email</td>
+									<td>: {{$model->email}}</td>
+								</tr>
+								<tr>
+									<td>Nomor HP</td>
+									<td>: {{$model->nohp}}</td>
+								</tr>
+							</table>
 						</div>
-						<div class="col-md-6">
-							<h4>: {{$model->id_nik}}</h4>
-							<h6>: {{$model->nama}}</h6>
-							<h6>: {{$model->tempat_lahir}}</h6>
-							<h6>&nbsp;&nbsp;{{$model->tanggal_lahir}}</h6>
-							<h6>: {{$model->jenis_kelamin}}		Gol. Darah :{{$model->gol_darah}}</h6>
-							<h6>: {{$model->alamat}}</h6>
-							<h6>: {{$model->rt_rw}}</h6>
-							<h6>: {{$model->desa}}</h6>
-							<h6>: {{$model->kecamatan}}</h6>
-							<h6>: {{$model->agama}}</h6>
-							<h6>: {{$model->status_perkawinan}}</h6>
-							<h6>: {{$model->pekerjaan}}</h6>
-							<h6>: {{$model->kewarganegaraan}}</h6>
-						</div>
-						<div class="col-md-4">
-							<br>
-							<h6>Foto KTP:</h6>
-							<div class="thumbnail">
-                                <img class="img-thumbnail" src="{{ asset($model->showKtp()) }}" alt="">
-                            </div>
-							<br>
-							<br>
-							<br>
-							<h6>Foto Bersama KTP:</h6>
-							<div class="thumbnail">
-                                <img class="img-thumbnail" src="{{ asset($model->showBersamaKtp()) }}" alt="">
-                            </div>
+						<div class="col-md-7">
+							<form class="form-horizontal" action="{{ route('admin.pendaftaran.buka')}}" method="post" enctype="multipart/form-data">
+							{{ csrf_field() }}
+								<div class="form-group">
+									<div class="card">
+										<div class="card-header">
+											<h5>Hak Akses Penggunaan</h5>
+										</div>
+										<div class="card-body">
+										@foreach($rooms as $ruang)
+											@php
+											$found = 0;
+											@endphp
+											@foreach($model->ruangs as $regrooms)
+												@if($regrooms->id == $ruang->id)
+													@php
+													$found=1;
+													@endphp
+												@endif
+											@endforeach
+											<div class="checkbox">
+												<label><input type="checkbox" name="hak_akses[]" value="{{$ruang->id}}" @if($found == 1) checked @endif>{{$ruang->nama}}</label>
+											</div>
+											
+										@endforeach
+										</div>
+									</div>
+									<div class="controls">
+										<input class="form-control" id="id" type="hidden" name="pengguna_id" value= "{{$model->id}}"required>
+									</div>
+									<div class="card">
+										<div class="card-header">
+											<h5>Detil Pendaftaran</h5>
+										</div>
+										<div class="card-body">
+											<div class="controls">
+												<label for="tipe">Tipe Kartu Yang Didaftarkan:</label>
+												<select class="form-control" id="tipe" name="tipe" required>
+													<option value="">Silahkan Pilih Jenis Kartu</option>
+													<option value="KTM">KTM</option>
+													<option value="KTP">KTP</option>
+													<option value="Lainnya">Lainnya</option>
+												</select>
+												<br>
+												<label for="alat_id">Alat yang Digunakan Untuk Mendaftar:</label>
+												<select class="form-control" id="alat_id" name="alat_id" required>
+													<option value="">Silahkan Pilih Alat yang Digunakan</option>
+													@foreach($alats as $alat)
+														<option value="{{$alat->id}}">{{$alat->nama}} (Ruang {{$alat->ruang->nama}})</option>
+													@endforeach
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+                        
+								<div class="form-actions">
+									<button class="btn btn-primary" type="submit">Buka Pendaftaran</button>
+								</div>
+							</form>
 						</div>
 					</div>
-                    <form class="form-horizontal" action="{{ route('admin.pendaftaran.buka')}}" method="post" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <div class="controls">
-                                <input class="form-control" id="title" size="16" type="hidden" name="id_nik" placeholder="NIK" value= "{{$model->id_nik}}"required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn btn-primary" type="submit">Buka Pendaftaran</button>
-                        </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
