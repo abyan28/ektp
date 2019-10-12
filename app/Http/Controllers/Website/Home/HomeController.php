@@ -48,7 +48,7 @@ class HomeController extends Controller
 	{
 		//return "masuk";
 		$attributes = [
-        'nama' => "Nama",
+        'name' => "Nama",
 		'id_nik' => "NIK",
 		'nrp' => "NRP",
 		'nohp' => "Nomor HP",
@@ -64,7 +64,7 @@ class HomeController extends Controller
 		];
 		$rules = [
 			'id_nik' => 'required|min:16|max:16',
-			'nama' => 'required|max:50',
+			'name' => 'required|max:50',
 			'jenis_kelamin' => 'required|max:10',
 			'nrp' => "required|min:14|max:14",
 			'nohp' => "required",

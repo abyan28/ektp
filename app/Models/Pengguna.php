@@ -12,7 +12,7 @@ class Pengguna extends Authenticatable
 {
 	use Notifiable;
 	protected $guard = 'pendaftar';
-    protected $fillable = ['id_nik', 'nama', 'nrp', 'nohp', 'jenis_kelamin', 'alamat', 'email',
+    protected $fillable = ['id_nik', 'name', 'nrp', 'nohp', 'jenis_kelamin', 'alamat', 'email',
     'password', 'uid_kartu', 'status'];
 	/*
 	public function showKtp ()

@@ -172,7 +172,7 @@ class TappingController extends Controller
 			$mode = $alat->mode;
 			$logs['hasil'] = 1;
 			$logs['uid_kartu'] = $uid;
-			$logs['nama'] = $kartu->pengguna->nama;
+			$logs['nama'] = $kartu->pengguna->name;
 			$logs['tipe_kartu'] = $kartu->tipe;
 			$logs['ruangan'] = $alat->ruang->nama;
 			$roomid =$alat->ruang->id;
@@ -188,8 +188,56 @@ class TappingController extends Controller
 			{
 				$logs['hasil'] = 1;
 				$logs->save();
-				if($mode == "gembok")
+				if($mode == "gembok" || $mode == "bpjs" || $mode == "absensi")
 				{
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+				}
+				else if($mode == "transaksi")
+				{
+					$transaction = Transaksi::where('alat_id', '=', $id)->first();
+					if($transaction)
+					{
+						$transaction->uid = $uid;
+					}
+					else
+					{
+						$transaction = new Transaksi();
+						$transaction->alat_id = $id;
+						$transaction->uid = $uid;
+					}
+					$transaction->save();
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+				}
+				else if($mode == "absensi")
+				{
+					$transaction = Transaksi::where('alat_id', '=', $id)->first();
+					if($transaction)
+					{
+						$transaction->uid = $uid;
+					}
+					else
+					{
+						$transaction = new Transaksi();
+						$transaction->alat_id = $id;
+						$transaction->uid = $uid;
+					}
+					$transaction->save();
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+				}
+				else if($mode == "transaksi")
+				{
+					$transaction = Transaksi::where('alat_id', '=', $id)->first();
+					if($transaction)
+					{
+						$transaction->uid = $uid;
+					}
+					else
+					{
+						$transaction = new Transaksi();
+						$transaction->alat_id = $id;
+						$transaction->uid = $uid;
+					}
+					$transaction->save();
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
 				}
 				else if($mode == "transaksi")
@@ -246,7 +294,7 @@ class TappingController extends Controller
 				}
 				$logs['hasil'] = 2;
 				$logs['uid_kartu'] = $uid;
-				$logs['nama'] = $kartu->pengguna->nama;
+				$logs['nama'] = $kartu->pengguna->name;
 				$logs['tipe_kartu'] = $kartu->tipe;;
 				$logs['ruangan'] = Alat::find($id)->ruang->nama;
 				$logs->save();

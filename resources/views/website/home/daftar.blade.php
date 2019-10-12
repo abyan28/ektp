@@ -219,11 +219,11 @@
 						</div>
 						<div class="form-group">
 							<label for="nik">NRP: </label>
-							<input type="text" class="form-control" maxlength="14" id="nrp" name="nrp" placeholder="NRP*" value ="{{old('id_nik')}}"></input>
+							<input type="text" class="form-control" maxlength="14" id="nrp" name="nrp" placeholder="NRP*" value ="{{old('nrp')}}"></input>
 						</div>
 						<div class="form-group">
-							<label for="nama">Nama: </label>
-							<input type="text" class="form-control" id="nama" name="nama" placeholder="Nama*" value ="{{old('nama')}}"></input>
+							<label for="name">Nama: </label>
+							<input type="text" class="form-control" id="name" name="name" placeholder="Nama*" value ="{{old('name')}}"></input>
 						</div>
 						<div class="form-group">
 							<label for="jenis_kelamin">Jenis Kelamin: </label>
@@ -240,11 +240,11 @@
 							<input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat*" value ="{{old('alamat')}}"></input>
 						</div>
 						<div class="form-group">
-							<label for="nama">Email: </label>
+							<label for="email">Email: </label>
 							<input type="text" class="form-control" id="email" name="email" placeholder="Email*" value ="{{old('email')}}"></input>
 						</div>
 						<div class="form-group">
-							<label for="nama">Nomor HP (Utamakan nomor yang digunakan di OVO): </label>
+							<label for="nohp">Nomor HP (Utamakan nomor yang digunakan di OVO): </label>
 							<input type="text" class="form-control" id="nohp" name="nohp" placeholder="Nomor HP*" value ="{{old('nohp')}}"></input>
 						</div>
 						<div class="form-group">

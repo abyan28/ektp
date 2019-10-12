@@ -1,8 +1,6 @@
 @extends('admin.layout')
 
-@section('styles')
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-@stop
+
 
 
 

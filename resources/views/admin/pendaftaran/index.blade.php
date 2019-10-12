@@ -45,7 +45,7 @@
 								</tr>
 								<tr>
 									<td>Nama</td>
-									<td>: {{$model->nama}}</td>
+									<td>: {{$model->name}}</td>
 								</tr>
 								<tr>
 									<td>NRP</td>

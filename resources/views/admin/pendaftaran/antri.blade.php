@@ -46,7 +46,7 @@
 					<tbody>
 					@foreach($models as $model)
 					<tr>
-					<td>{{$model->pengguna->nama}}</td>
+					<td>{{$model->pengguna->name}}</td>
 					<td>{{$model->pengguna->nrp}}</td>
 					<td>{{$model->alat->nama}}</td>
 					<td>{{$model->alat->ruang->nama}}</td>
