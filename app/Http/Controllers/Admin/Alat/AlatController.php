@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Alat;
 
 use App\Models\Alat;
+use App\Models\Ruang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -69,7 +70,14 @@ class AlatController extends Controller
     public function show(Alat $alat)
     {
         //
+		$data['model'] = $alat;
+		$data['ruangs'] = Ruang::all();
+		return view('admin.alat.show', $data);
     }
+	
+	public function updateMode(Request $request)
+	{
+	}
 
     /**
      * Show the form for editing the specified resource.
@@ -81,6 +89,7 @@ class AlatController extends Controller
     {
         //
 		$data['model'] = $alat;
+		$data['ruangs'] = Ruang::all();
 		return view('admin.alat.edit', $data);
     }
 
@@ -94,13 +103,12 @@ class AlatController extends Controller
     public function update(Request $request, Alat $alat)
     {
         //
-		$alat->validate([
+		$request->validate([
             'nama' => 'required|max:50',
 			'ruang_id' => 'required',
-			'proxy_user' => 'required',
-			'proxy_pass' => 'required'
+			'mode' => 'required'
         ]);
-		if ($ruang->update($request->all())) {
+		if ($alat->update($request->all())) {
 			return redirect()->route('admin.alat.index')->with(['status' => 'success', 'message' => 'Updated Successfully']);
 		}
 		return redirect()->route('admin.alat.edit', $alat->id)->with(['status' => 'danger', 'message' => 'Save Failed, Contact Developer']);
