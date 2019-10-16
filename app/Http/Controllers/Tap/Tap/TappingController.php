@@ -275,22 +275,19 @@ class TappingController extends Controller
 	
 	public function tapCardMultiPost(Request $request)
 	{
-		$uid = $request->uid;
-		$id = $request->id;
 		$kartu = Kartu::where('uid', '=', $uid)->first();
 		$found = 0;
 		$logs = new Logs();
-		//return response()->json(['id' => $id, 'uid' => $uid]);
 		if($kartu)
 		{
-			
 			$alat = Alat::find($id);
 			$mode = $alat->mode;
 			$logs['hasil'] = 1;
 			$logs['uid_kartu'] = $uid;
-			$logs['nama'] = $kartu->pengguna->nama;
+			$logs['nama'] = $kartu->pengguna->name;
 			$logs['tipe_kartu'] = $kartu->tipe;
 			$logs['ruangan'] = $alat->ruang->nama;
+			$logs['mode'] = $alat->mode;
 			$roomid =$alat->ruang->id;
 			$found = 0;
 			foreach($kartu->pengguna->ruangs as $ruang)
@@ -304,9 +301,9 @@ class TappingController extends Controller
 			{
 				$logs['hasil'] = 1;
 				$logs->save();
-				if($mode == "gembok")
+				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1")
 				{
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
 				else if($mode == "transaksi")
 				{
@@ -322,15 +319,16 @@ class TappingController extends Controller
 						$transaction->uid = $uid;
 					}
 					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
+				
 				
 			}
 			else
 			{
 				$logs['hasil'] = 0;
 				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
+				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu, 'log' => $logs->id]);
 			}
 			
 		}
@@ -362,12 +360,12 @@ class TappingController extends Controller
 				}
 				$logs['hasil'] = 2;
 				$logs['uid_kartu'] = $uid;
-				$logs['nama'] = $kartu->pengguna->nama;
+				$logs['nama'] = $kartu->pengguna->name;
 				$logs['tipe_kartu'] = $kartu->tipe;;
 				$logs['ruangan'] = Alat::find($id)->ruang->nama;
 				$logs->save();
 				$pendaftaran->delete();
-				return response()->json(['hasil' => 'pendaftaran berhasil', 'data' => $kartu->pengguna]);
+				return response()->json(['hasil' => 'pendaftaran berhasil', 'data' => $kartu->pengguna, 'log' => $logs->id, 'uid' => $uid]);
 			}
 			else
 			{
@@ -378,7 +376,7 @@ class TappingController extends Controller
 				$logs['tipe_kartu'] = 'Tak Diketahui';
 				$logs['ruangan'] = Alat::find($id)->ruang->nama;;
 				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
+				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu, 'log' => $logs->id, 'uid' => $uid]);
 			}
 		}
 		
@@ -392,17 +390,27 @@ class TappingController extends Controller
 	public function sendImages(Request $request)
 	{
 		//store file
-		$kartu = Kartu::where('uid', '=', $uid)->first();
-		$found = 0;
-		$img = $request->img;
-		$log = Logs::find($request->log);
-		$status = $request->status;
+		//return response()->json(['hasil' => $request->uid]);
 		$uid = $request->uid;
+		$alat = Alat::find($request->id);
+		$id = $request->id;
+		$kartu = Kartu::where('uid', '=', $uid)->first();
+		$mode=$alat->mode;
+		$found = 0;
+		$img = $request->file('img');
+		$str2 = (string)Carbon::now();
+		$str1 = (string)($kartu->pengguna->id);
+		$str = 'logs/photos/'.$str1;
+		$path = $img->store($str);
+		$log = Logs::find($request->logid);
+		$log->url_gambar = $path;
+		$status = $request->status;
+		
 		if($status == 'ACCEPTED')
 		{
 			$log->hasil = 3;
 			$log->save();
-			if(mode=='bpjs')
+			if($mode=='bpjs')
 			{
 				$transaction = Transaksi::where('alat_id', '=', $id)->first();
 				if($transaction)
@@ -441,19 +449,19 @@ class TappingController extends Controller
 					if($pasiens->count() >= 1)
 					{
 						$transaction->save();
-						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $logs->id]);
+						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $log->id]);
 					}
 					else
 					{
-						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Rujukan Tak Ditemukan', 'mode' => $mode, 'log' => $logs->id]);
+						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Rujukan Tak Ditemukan', 'mode' => $mode, 'log' => $log->id]);
 					}
 				}
 				else
 				{
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $logs->id]);
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
 				}
 			}
-			else if(mode=='faskes1')
+			else if($mode=='faskes1')
 			{
 				$transaction = Transaksi::where('alat_id', '=', $id)->first();
 				if($transaction)
@@ -505,24 +513,24 @@ class TappingController extends Controller
 					$setting->save();
 					$pasien->save();
 					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'no' => ($noantri+1), 'log' => $logs->id]);
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'no' => ($noantri+1), 'log' => $log->id]);
 				}
 				else
 				{
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $logs->id]);
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
 				}
 			}
-			else if(mode=='checkin')
+			else if($mode=='checkin')
 			{
-				return response()->json(['hasil' => 'ditemukan', 'checkin' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
 			}
-			else if(mode=='gembok')
+			else if($mode=='gembok')
 			{
-				return response()->json(['hasil' => 'ditemukan', 'gembok' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
 			}
-			else if(mode=='absensi')
+			else if($mode=='absensi')
 			{
-				return response()->json(['hasil' => 'ditemukan', 'absensi' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
 			}
 			
 		}
@@ -533,9 +541,5 @@ class TappingController extends Controller
 			return response()->json(['hasil' => 'mismatch', 'mode' => $mode, 'log' => $logs->id]);
 		}
 				
-	}
-	public function testStrorage()
-	{
-		return 
 	}
 }

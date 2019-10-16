@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::post('/register', 'Api\Pendaftaran\PendaftaranController@store')->name('api.daftar');
 Route::get('/test', 'Api\Pendaftaran\PendaftaranController@index')->name('api.test');
 Route::post('/tap/multi', 'Tap\Tap\TappingController@tapCardMultiPost')->name('api.tap');
+Route::post('/tap/process', 'Tap\Tap\TappingController@sendImages')->name('tap.process');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

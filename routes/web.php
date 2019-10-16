@@ -31,7 +31,7 @@ Route::post('/login','Pendaftaran\Auth\LoginController@store')->name('login.stor
 Route::resource('pengguna','Pengguna\PenggunaController');
 
 //Route::get('/tap/{id}', 'Tap\Tap\TappingController@tapCard')->name('tap.process');
-Route::post('/tap/process', 'Tap\Tap\TappingController@sendGambar')->name('tap.process');
+
 Route::get('/tap/multi/{id}/{uid}', 'Tap\Tap\TappingController@tapCardMulti')->name('tap.multi');
 Route::post('/tap', 'Tap\Tap\TappingController@tapCardPost')->name('tap.post');
 Route::get('/transaksi/{alat_id}', 'Website\Transaksi\TransaksiController@show')->name('transaksi.show');
