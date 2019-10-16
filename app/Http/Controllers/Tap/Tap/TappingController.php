@@ -8,8 +8,11 @@ use App\Models\Pengguna;
 use App\Models\Logs;
 use App\Models\Kartu;
 use App\Models\Alat;
+use App\Models\Setting;
+use App\Models\Pasien;
 use App\Models\Pendaftaran;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 
 class TappingController extends Controller
 {
@@ -175,6 +178,7 @@ class TappingController extends Controller
 			$logs['nama'] = $kartu->pengguna->name;
 			$logs['tipe_kartu'] = $kartu->tipe;
 			$logs['ruangan'] = $alat->ruang->nama;
+			$logs['mode'] = $alat->mode;
 			$roomid =$alat->ruang->id;
 			$found = 0;
 			foreach($kartu->pengguna->ruangs as $ruang)
@@ -188,9 +192,9 @@ class TappingController extends Controller
 			{
 				$logs['hasil'] = 1;
 				$logs->save();
-				if($mode == "gembok" || $mode == "bpjs" || $mode == "absensi")
+				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1")
 				{
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
 				else if($mode == "transaksi")
 				{
@@ -206,63 +210,16 @@ class TappingController extends Controller
 						$transaction->uid = $uid;
 					}
 					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
+					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
-				else if($mode == "absensi")
-				{
-					$transaction = Transaksi::where('alat_id', '=', $id)->first();
-					if($transaction)
-					{
-						$transaction->uid = $uid;
-					}
-					else
-					{
-						$transaction = new Transaksi();
-						$transaction->alat_id = $id;
-						$transaction->uid = $uid;
-					}
-					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
-				}
-				else if($mode == "transaksi")
-				{
-					$transaction = Transaksi::where('alat_id', '=', $id)->first();
-					if($transaction)
-					{
-						$transaction->uid = $uid;
-					}
-					else
-					{
-						$transaction = new Transaksi();
-						$transaction->alat_id = $id;
-						$transaction->uid = $uid;
-					}
-					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
-				}
-				else if($mode == "transaksi")
-				{
-					$transaction = Transaksi::where('alat_id', '=', $id)->first();
-					if($transaction)
-					{
-						$transaction->uid = $uid;
-					}
-					else
-					{
-						$transaction = new Transaksi();
-						$transaction->alat_id = $id;
-						$transaction->uid = $uid;
-					}
-					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode]);
-				}
+				
 				
 			}
 			else
 			{
 				$logs['hasil'] = 0;
 				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
+				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu, 'log' => $logs->id]);
 			}
 			
 		}
@@ -299,7 +256,7 @@ class TappingController extends Controller
 				$logs['ruangan'] = Alat::find($id)->ruang->nama;
 				$logs->save();
 				$pendaftaran->delete();
-				return response()->json(['hasil' => 'pendaftaran berhasil', 'data' => $kartu->pengguna]);
+				return response()->json(['hasil' => 'pendaftaran berhasil', 'data' => $kartu->pengguna, 'log' => $logs->id, 'uid' => $uid]);
 			}
 			else
 			{
@@ -310,7 +267,7 @@ class TappingController extends Controller
 				$logs['tipe_kartu'] = 'Tak Diketahui';
 				$logs['ruangan'] = Alat::find($id)->ruang->nama;;
 				$logs->save();
-				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu]);
+				return response()->json(['hasil' => 'tak dikenal', 'data' => $kartu, 'log' => $logs->id, 'uid' => $uid]);
 			}
 		}
 		
@@ -431,5 +388,154 @@ class TappingController extends Controller
 	{
 		$data['models'] = Logs::latest()->get();
 		return view('admin.logs.index', $data);
+	}
+	public function sendImages(Request $request)
+	{
+		//store file
+		$kartu = Kartu::where('uid', '=', $uid)->first();
+		$found = 0;
+		$img = $request->img;
+		$log = Logs::find($request->log);
+		$status = $request->status;
+		$uid = $request->uid;
+		if($status == 'ACCEPTED')
+		{
+			$log->hasil = 3;
+			$log->save();
+			if(mode=='bpjs')
+			{
+				$transaction = Transaksi::where('alat_id', '=', $id)->first();
+				if($transaction)
+				{
+					$transaction->uid = $uid;
+				}
+				else
+				{
+					$transaction = new Transaksi();
+					$transaction->alat_id = $id;
+					$transaction->uid = $uid;
+				}
+				$idpengguna = $kartu->pengguna->id;
+				$pasiens = Pasien::where('pengguna_id', '=', $idpengguna)->where('status', '=', 0)->get();
+				$bpjs = $kartu->pengguna->bpjs->first();
+				//return response()->json(['hasil' => 'ditemukan', 'data' => $bpjs->batas_pembayaran, 'mode' => $mode]);
+				$status = 0;
+				//$time = Carbon::now();
+				//return response()->json(['hasil' => 'ditemukan', 'data' => ($bpjs->batas_pembayaran > Carbon::now()), 'mode' => $mode]);
+				if(($bpjs->batas_pembayaran > Carbon::now()))
+				{
+					$status =1 ;
+				}
+				else
+				{
+					$now = Carbon::now();
+					$diff = $now->diffinDays($bpjs->batas_pembayaran);	
+					//return response()->json(['hasil' => 'ditemukan', 'bpjs' => $diff, 'mode' => $mode]);
+					if($diff < 30)
+					{
+						$status =1 ;
+					}
+				}
+				if($status == 1)
+				{
+					if($pasiens->count() >= 1)
+					{
+						$transaction->save();
+						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $logs->id]);
+					}
+					else
+					{
+						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Rujukan Tak Ditemukan', 'mode' => $mode, 'log' => $logs->id]);
+					}
+				}
+				else
+				{
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $logs->id]);
+				}
+			}
+			else if(mode=='faskes1')
+			{
+				$transaction = Transaksi::where('alat_id', '=', $id)->first();
+				if($transaction)
+				{
+					$transaction->uid = $uid;
+				}
+				else
+				{
+					$transaction = new Transaksi();
+					$transaction->alat_id = $id;
+					$transaction->uid = $uid;
+				}
+				$idpengguna = $kartu->pengguna->id;
+				
+				
+				
+				$bpjs = $kartu->pengguna->bpjs->first();
+				//return response()->json(['hasil' => 'ditemukan', 'data' => $bpjs->batas_pembayaran, 'mode' => $mode]);
+				$status = 0;
+				//$time = Carbon::now();
+				//return response()->json(['hasil' => 'ditemukan', 'data' => ($bpjs->batas_pembayaran > Carbon::now()), 'mode' => $mode]);
+				if(($bpjs->batas_pembayaran > Carbon::now()))
+				{
+					$status =1 ;
+				}
+				else
+				{
+					$now = Carbon::now();
+					$diff = $now->diffinDays($bpjs->batas_pembayaran);	
+					//return response()->json(['hasil' => 'ditemukan', 'bpjs' => $diff, 'mode' => $mode]);
+					if($diff < 30)
+					{
+						$status =1 ;
+					}
+				}
+				if($status == 1)
+				{
+					$pasien = new Pasien();
+					$pasien->faskes_tingkat1 = "Faskes 1";
+					$pasien->pengguna_id = $idpengguna;
+					
+					$setting = Setting::first();
+					$pasien->rs_perujuk = $setting->rs_nama;
+					$pasien->faskes_tingkat1 = $setting->rs_nama;
+					$noantri = $setting->index_antrian;
+					$setting->index_antrian = $noantri + 1;
+					$pasien->nomor_antrian = $noantri + 1;
+					$pasien->status = -1;
+					$setting->save();
+					$pasien->save();
+					$transaction->save();
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'no' => ($noantri+1), 'log' => $logs->id]);
+				}
+				else
+				{
+					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $logs->id]);
+				}
+			}
+			else if(mode=='checkin')
+			{
+				return response()->json(['hasil' => 'ditemukan', 'checkin' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+			}
+			else if(mode=='gembok')
+			{
+				return response()->json(['hasil' => 'ditemukan', 'gembok' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+			}
+			else if(mode=='absensi')
+			{
+				return response()->json(['hasil' => 'ditemukan', 'absensi' => 'sukses', 'mode' => $mode, 'log' => $logs->id]);
+			}
+			
+		}
+		else
+		{
+			$log->hasil = 2;
+			$log->save();
+			return response()->json(['hasil' => 'mismatch', 'mode' => $mode, 'log' => $logs->id]);
+		}
+				
+	}
+	public function testStrorage()
+	{
+		return 
 	}
 }

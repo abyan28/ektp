@@ -43,5 +43,17 @@ class Pengguna extends Authenticatable
     {
         return $this->belongsToMany('App\Models\Ruang');
     }
+	public function bpjs()
+	{
+		return $this->hasMany('App\Models\Bpjs');
+	}
+	public function pasiens()
+	{
+		return $this->hasMany('App\Models\Pasien');
+	}
+	public function tikets()
+	{
+		return $this->belongstoMany('App\Models\Tiket')->withPivot('nomor_kursi', 'kelaskereta_id');
+	}
 	
 }

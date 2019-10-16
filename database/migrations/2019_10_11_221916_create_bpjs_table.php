@@ -15,6 +15,7 @@ class CreateBpjsTable extends Migration
     {
         Schema::create('bpjs', function (Blueprint $table) {
             $table->bigIncrements('id');
+			$table->unsignedBigInteger('id_pengguna');
             $table->timestamps();
         });
     }

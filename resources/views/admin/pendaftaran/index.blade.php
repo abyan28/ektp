@@ -13,8 +13,8 @@
     <li class="breadcrumb-item">
         <a href="{{ route('admin.index') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item">Pendaftaran</li>
-    <li class="breadcrumb-item active">Pencarian NRP</li>
+    <li class="breadcrumb-item">BPJS</li>
+    <li class="breadcrumb-item active">Pencarian BPJS</li>
 @stop
 
 @section('content')
@@ -26,49 +26,102 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-edit"></i>Data Pendaftaran</div>
+                    <i class="fa fa-edit"></i>Data BPJS</div>
                 <div class="card-body">
                     @if (Session::has('status'))
                         <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
                     @endif
+					<div class="alert alert-success" role="alert">Pendaftaran Pasien BPJS Berhasil</div>
                     @if ($errors->any())
                         @foreach($errors->all() as $error)
                             <div class="alert alert-danger" role="alert">{{ $error }}</div>
                         @endforeach
                     @endif
+					<img src="{{asset('static\website\img\logo-bpjs.png')}}"></img>
 					<div class="row">
-						<div class="col-md-5">
+					<div class="col-md-6">
+							<br>
+							<br>
+							<br>
 							<table>
 								<tr>
-									<td>NIK</td>
-									<td>: {{$model->id_nik}}</td>
+									<td><h4>NIK</h4></td>
+									<td><h4>: {{$model->id_nik}}</h4></td>
 								</tr>
 								<tr>
-									<td>Nama</td>
-									<td>: {{$model->name}}</td>
+									<td><h4>Nama</h4></td>
+									<td><h4>: {{$model->name}}</h4></td>
 								</tr>
+								<!--
 								<tr>
 									<td>NRP</td>
 									<td>: {{$model->nrp}}</td>
 								</tr>
+								-->
 								<tr>
-									<td>Jenis Kelamin</td>
-									<td>: {{$model->jenis_kelamin}}</td>
+									<td><h4>Jenis Kelamin</h4></td>
+									<td><h4>: {{$model->jenis_kelamin}}</h4></td>
 								</tr>
 								<tr>
-									<td>Alamat</td>
-									<td>: {{$model->alamat}}</td>
+									<td><h4>Alamat</h4></td>
+									<td><h4>: {{$model->alamat}}</h4></td>
 								</tr>
 								<tr>
-									<td>Email</td>
-									<td>: {{$model->email}}</td>
+									<td><h4>Email</h4></td>
+									<td><h4>: {{$model->email}}</h4></td>
 								</tr>
 								<tr>
-									<td>Nomor HP</td>
-									<td>: {{$model->nohp}}</td>
+									<td><h4>Nomor HP</h4></td>
+									<td><h4>: {{$model->nohp}}</h4></td>
 								</tr>
 							</table>
 						</div>
+						<div class="col-md-6">
+							<br>
+							<br>
+							<br>
+							<table>
+								<tr>
+									<td><h4>Diagnosa</h4></td>
+									<td><h4>: Demam</h4></td>
+								</tr>
+								<tr>
+									<td><h4>Rumah Sakit Rujukan</h4></td>
+									<td><h4>: RS Percobaan</h4></td>
+								</tr>
+								<tr>
+									<td><h4>Faskes Tingkat I</h4></td>
+									<td><h4>: RS Eksperimentasi</h4></td>
+								</tr>
+								<!--
+								<tr>
+									<td>NRP</td>
+									<td>: {{$model->nrp}}</td>
+								</tr>
+								-->
+								<!--tr>
+									<td><h4>Nominal</h4></td>
+									<td><h4>: Rp. 1.000.000,00</h4></td>
+								</tr-->
+								<tr>
+									<td><h4>Status BPJS</h4></td>
+									<td><h4>: Aktif</h4></td>
+								</tr>
+								
+								<!--
+								<tr>
+									<td><h4>Email</h4></td>
+									<td><h4>: {{$model->email}}</h4></td>
+								</tr>
+								<tr>
+									<td><h4>Nomor HP</h4></td>
+									<td><h4>: {{$model->nohp}}</h4></td>
+								</tr>
+								-->
+							</table>
+						</div>
+						
+						<!--
 						<div class="col-md-7">
 							<form class="form-horizontal" action="{{ route('admin.pendaftaran.buka')}}" method="post" enctype="multipart/form-data">
 							{{ csrf_field() }}
@@ -130,6 +183,7 @@
 								</div>
 							</form>
 						</div>
+						-->
 					</div>
                     
                 </div>

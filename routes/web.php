@@ -30,7 +30,12 @@ Route::get('/login','Pendaftaran\Auth\LoginController@index')->name('login.index
 Route::post('/login','Pendaftaran\Auth\LoginController@store')->name('login.store');
 Route::resource('pengguna','Pengguna\PenggunaController');
 
-Route::get('/tap/{id}', 'Tap\Tap\TappingController@tapCard')->name('tap.process');
+//Route::get('/tap/{id}', 'Tap\Tap\TappingController@tapCard')->name('tap.process');
+Route::post('/tap/process', 'Tap\Tap\TappingController@sendGambar')->name('tap.process');
 Route::get('/tap/multi/{id}/{uid}', 'Tap\Tap\TappingController@tapCardMulti')->name('tap.multi');
 Route::post('/tap', 'Tap\Tap\TappingController@tapCardPost')->name('tap.post');
 Route::get('/transaksi/{alat_id}', 'Website\Transaksi\TransaksiController@show')->name('transaksi.show');
+Route::get('/tiket/', 'Website\Tiket\TiketController@index')->name('tiket.index');
+Route::get('/tiket/{id}/{kelas}', 'Website\Tiket\TiketController@edit')->name('tiket.edit');
+Route::post('/tiket/list', 'Website\Tiket\TiketController@listTiket')->name('tiket.list');
+Route::post('/tiket/update', 'Website\Tiket\TiketController@update')->name('tiket.update');

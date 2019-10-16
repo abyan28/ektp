@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Website\Transaksi;
 use App\Models\Transaksi;
 use App\Models\Pengguna;
 use App\Models\Kartu;
+use App\Models\Setting;
+use App\Models\Alat;
+use App\Models\Pasien;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -54,13 +57,25 @@ class TransaksiController extends Controller
 		//return "hi";
 		//return $alat_id;
 		$transaksi = Transaksi::where('alat_id', '=', $alat_id)->first();
+		$mode = Alat::find($alat_id)->mode;
 		//return $transaksi;
 		if($transaksi)
 		{
 			$kartu = Kartu::where('uid', '=', $transaksi->uid)->first();
-			$nohp = $kartu->pengguna->nohp;
-			Transaksi::where('alat_id', $alat_id)->delete();
-			return response()->json(['status' => '200', 'res' => 1, 'nohp' => $nohp]);
+			
+			if($mode == "transaksi")
+			{
+				$nohp = $kartu->pengguna->nohp;
+				Transaksi::where('alat_id', $alat_id)->delete();
+				return response()->json(['status' => '200', 'res' => 1, 'nohp' => $nohp]);
+			}
+			else if($mode == "bpjs" || $mode == "faskes1")
+			{
+				$iduser = $kartu->pengguna->id;
+				Transaksi::where('alat_id', $alat_id)->delete();
+				return response()->json(['status' => '200', 'res' => 1, 'id' => $iduser]);
+			}
+			
 		}
 		else
 		{
