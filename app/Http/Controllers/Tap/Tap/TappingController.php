@@ -192,7 +192,7 @@ class TappingController extends Controller
 			{
 				$logs['hasil'] = 1;
 				$logs->save();
-				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1")
+				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1" || $mode=="checkin")
 				{
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
@@ -212,6 +212,7 @@ class TappingController extends Controller
 					$transaction->save();
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
+				
 				
 				
 			}
@@ -404,12 +405,11 @@ class TappingController extends Controller
 		$path = $img->store($str);
 		$log = Logs::find($request->logid);
 		$log->url_gambar = $path;
+		$log->id_nik = $kartu->pengguna->id_nik;
 		$status = $request->status;
 		
 		if($status == 'ACCEPTED')
 		{
-			$log->hasil = 3;
-			$log->save();
 			if($mode=='bpjs')
 			{
 				$transaction = Transaksi::where('alat_id', '=', $id)->first();
@@ -426,6 +426,17 @@ class TappingController extends Controller
 				$idpengguna = $kartu->pengguna->id;
 				$pasiens = Pasien::where('pengguna_id', '=', $idpengguna)->where('status', '=', 0)->get();
 				$bpjs = $kartu->pengguna->bpjs->first();
+				if($bpjs)
+				{
+					$nothing = 0;
+				}
+				else
+				{
+					$log->hasil = 4;
+					$log->save();
+					return response()->json(['hasil' => '0', 'string' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $log->id]);
+				}
+					
 				//return response()->json(['hasil' => 'ditemukan', 'data' => $bpjs->batas_pembayaran, 'mode' => $mode]);
 				$status = 0;
 				//$time = Carbon::now();
@@ -448,17 +459,23 @@ class TappingController extends Controller
 				{
 					if($pasiens->count() >= 1)
 					{
+						$log->hasil = 3;
+						$log->save();
 						$transaction->save();
-						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $log->id]);
+						return response()->json(['hasil' => '1', 'string' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $log->id]);
 					}
 					else
 					{
-						return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Rujukan Tak Ditemukan', 'mode' => $mode, 'log' => $log->id]);
+						$log->hasil = 4;
+						$log->save();
+						return response()->json(['hasil' => '0', 'string' => 'Rujukan Tak Ditemukan', 'mode' => $mode, 'log' => $log->id]);
 					}
 				}
 				else
 				{
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
+					$log->hasil = 4;
+					$log->save();
+					return response()->json(['hasil' => '0', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
 				}
 			}
 			else if($mode=='faskes1')
@@ -513,33 +530,87 @@ class TappingController extends Controller
 					$setting->save();
 					$pasien->save();
 					$transaction->save();
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'no' => ($noantri+1), 'log' => $log->id]);
+					$log->hasil = 3;
+					$log->save();
+					return response()->json(['hasil' => '1', 'string' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'log' => $log->id]);
 				}
 				else
 				{
-					return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
+					$log->hasil = 4;
+					$log->save();
+					return response()->json(['hasil' => '0', 'string' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
+					//return response()->json(['hasil' => 'ditemukan', 'bpjs' => 'BPJS Belum Dibayar', 'mode' => $mode, 'log' => $log->id]);
 				}
 			}
-			else if($mode=='checkin')
+			else if($mode == "checkin")
 			{
-				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
+				$pengguna = $kartu->pengguna;
+				$tikets = $pengguna->tikets;
+				if($tikets->count()>0)
+				{
+					foreach($tikets as $tiket)
+					{
+						$date = Carbon::parse($tiket->tanggal_berangkat);
+						
+						if(Carbon::now() <= $date)
+						{
+							
+							if(Carbon::now()->diffinDays($tiket->tanggal_berangakat) == 0)
+							{
+								//return response()->json(['hasil' => $date,'checkin' => Carbon::now(), 'string' => $tiket->tanggal_berangkat, 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
+								if($tiket->pivot->check_in == 0)
+								{
+									//return response()->json(['hasil' => '1','checkin' => $tiket->pivot->check_in, 'string' => 'Check In Berhasil', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
+									$tiket->pivot->check_in = 1;
+									$tiket->pivot->save();
+									$log->hasil = 3;
+									$log->save();
+									return response()->json(['hasil' => '1','checkin' => $tiket->pivot->check_in, 'string' => 'Check In Berhasil', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
+								}
+							}
+						}
+					}
+					$log->hasil = 4;
+					$log->save();
+					return response()->json(['hasil' => '0', 'string' => 'Tiket Tidak Ditemukan', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
+				}
+				else
+				{
+					$log->hasil = 4;
+					$log->save();
+					return response()->json(['hasil' => '0', 'string' => 'Tiket Tidak Ditemukan', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
+				}
 			}
 			else if($mode=='gembok')
 			{
-				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
+				$log->hasil = 3;
+				$log->save();
+				return response()->json(['hasil' => '1', 'string' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
 			}
 			else if($mode=='absensi')
 			{
-				return response()->json(['hasil' => 'ditemukan', 'status' => 'sukses', 'mode' => $mode, 'log' => $log->id]);
+				$log->hasil = 3;
+				$log->save();
+				return response()->json(['hasil' => '1', 'string' => 'Absensi Berhasil', 'mode' => $mode, 'log' => $log->id]);
 			}
+			
 			
 		}
 		else
 		{
 			$log->hasil = 2;
 			$log->save();
-			return response()->json(['hasil' => 'mismatch', 'mode' => $mode, 'log' => $logs->id]);
+			return response()->json(['hasil' => '0', 'mode' => $mode, 'log' => $log->id, 'string' => 'mismatch']);
 		}
 				
+	}
+	public function testurl()
+	{
+		return asset('storage/logs/photos/4');
+	}
+	public function getMode(Request $request)
+	{
+		$alat = Alat::find($request->id);
+		return response()->json(['hasil' => '1', 'mode' => $alat->mode]);
 	}
 }

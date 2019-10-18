@@ -218,8 +218,7 @@
 							<input type="text" class="form-control" maxlength="16" id="nik" name="id_nik" placeholder="NIK*" value ="{{old('id_nik')}}"></input>
 						</div>
 						<div class="form-group">
-							<label for="nik">NRP: </label>
-							<input type="text" class="form-control" maxlength="14" id="nrp" name="nrp" placeholder="NRP*" value ="{{old('nrp')}}"></input>
+							<input type="hidden" value="12345678901234" class="form-control" maxlength="14" id="nrp" name="nrp" placeholder="NRP*" value ="{{old('nrp')}}"></input>
 						</div>
 						<div class="form-group">
 							<label for="name">Nama: </label>

@@ -58,11 +58,11 @@
                             <div class="controls">
                                 <select class="form-control" id="mode" name="mode" required>
                                     <option>Silahkan Pilih Mode</option>
-                                    <option value="gembok" {{ ($model->mode == 'gembok') ? 'selected':'' }}>Gembok</option>
+                                    <option value="gembok" {{ ($model->mode == 'gembok') ? 'selected':'' }}>Buka Pintu</option>
 									<option value="transaksi" {{ ($model->mode == 'transaksi') ? 'selected':'' }}>Transaksi</option>
 									<option value="absensi" {{ ($model->mode == 'absensi') ? 'selected':'' }}>Absensi</option>
 									<option value="bpjs" {{ ($model->mode == 'bpjs') ? 'selected':'' }}>Bpjs</option>
-									<option value="check in kereta" {{ ($model->mode == 'check in kereta') ? 'selected':'' }}>Check In Kereta</option>									
+									<option value="checkin" {{ ($model->mode == 'check in kereta') ? 'selected':'' }}>Check In Kereta</option>									
                                 </select>
                             </div>
                         </div>

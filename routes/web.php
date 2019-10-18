@@ -39,3 +39,4 @@ Route::get('/tiket/', 'Website\Tiket\TiketController@index')->name('tiket.index'
 Route::get('/tiket/{id}/{kelas}', 'Website\Tiket\TiketController@edit')->name('tiket.edit');
 Route::post('/tiket/list', 'Website\Tiket\TiketController@listTiket')->name('tiket.list');
 Route::post('/tiket/update', 'Website\Tiket\TiketController@update')->name('tiket.update');
+route::get('tap/test', 'Tap\Tap\TappingController@testurl');

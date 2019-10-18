@@ -22,26 +22,33 @@
                         <thead class="thead-dark">
                         <tr>
                             <th style="width: 20px;">No</th>
-							<th style="width: 110px;">Nama</th>
-							<th style="width: 110px;">Ruangan</th>
-							<th style="width: 110px;">Tipe Kartu</th>
-                            <th style="width: 110px;">Waktu Tapping</th>
-                            <th style="width: 110px;">UID Kartu</th>
-							<th style="width: 110px;">Hasil</th>
+							<th>Nama</th>
+							<th>Ruangan</th>
+							<th>Tipe Kartu</th>
+                            <th>Waktu Tapping</th>
+                            <th>UID Kartu</th>
+							<th>Gambar</th>
+							<th>Hasil</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($models as $key => $model)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-								<td>{{ $model->nama}}</td>
-								<td>{{ $model->ruangan}}</td>
+								<td>{{ $model->nama}}<br><span class="text-muted">NIK : {{ $model->id_nik }}</span></td>
+								<td>{{ $model->ruangan}}<br><span class="text-muted">Mode : {{ $model->mode }}</span></td>
 								<td>{{ $model->tipe_kartu}}</td>
 								<td>{{ $model->created_at}}</td>
                                 <td>
 									{{ $model->uid_kartu}}
                                 </td>
-                                <td>
+								<td>
+                                    <div class="thumbnail">
+                                        <img class="img-thumbnail" src="{{ asset($model->showImage()) }}" alt="" style="object-fil:cover;height: 100px;width: 100px;">
+											{{asset($model->showImage())}}
+                                    </div>
+                                </td>
+								<td>
 									@if($model->hasil == 0)
 										Tapping Gagal: Kartu Tidak Dikenal
 									@else
@@ -50,10 +57,20 @@
 										@else
 											@if($model->hasil == 2)
 												Tapping Berhasil: Pendaftaran Berhasil
+											
+											@else	
+												@if($model->hasil == 3)
+													Wajah Tidak Sesuai
+												@else
+													@if($model->hasil == 4)
+														Tapping Berhasil: Kartu dan Wajah Dikenal
+													@endif
+												@endif
 											@endif
 										@endif
 									@endif
                                 </td>
+								
                             </tr>
                         @endforeach
                         @if ($models->isEmpty())

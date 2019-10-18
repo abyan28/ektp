@@ -11,7 +11,7 @@
     <ul class="nav navbar-nav ml-auto mr-4">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img class="img-avatar" src="{{url('static/admin/img/avatars/6.jpg')}}" alt="admin@bootstrapmaster.com">
+            <img class="img-avatar" src="{{url('static/admin/img/avatars/9.png')}}" alt="admin@bootstrapmaster.com">
           </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <!--a class="dropdown-item" href="#">

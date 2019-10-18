@@ -37,9 +37,8 @@
                             <div class="alert alert-danger" role="alert">{{ $error }}</div>
                         @endforeach
                     @endif
-					<img src="{{asset('static\website\img\logo-bpjs.png')}}"></img>
 					<div class="row">
-					<div class="col-md-6">
+						<div class="col-md-5">
 							<br>
 							<br>
 							<br>
@@ -76,52 +75,9 @@
 								</tr>
 							</table>
 						</div>
-						<div class="col-md-6">
-							<br>
-							<br>
-							<br>
-							<table>
-								<tr>
-									<td><h4>Diagnosa</h4></td>
-									<td><h4>: Demam</h4></td>
-								</tr>
-								<tr>
-									<td><h4>Rumah Sakit Rujukan</h4></td>
-									<td><h4>: RS Percobaan</h4></td>
-								</tr>
-								<tr>
-									<td><h4>Faskes Tingkat I</h4></td>
-									<td><h4>: RS Eksperimentasi</h4></td>
-								</tr>
-								<!--
-								<tr>
-									<td>NRP</td>
-									<td>: {{$model->nrp}}</td>
-								</tr>
-								-->
-								<!--tr>
-									<td><h4>Nominal</h4></td>
-									<td><h4>: Rp. 1.000.000,00</h4></td>
-								</tr-->
-								<tr>
-									<td><h4>Status BPJS</h4></td>
-									<td><h4>: Aktif</h4></td>
-								</tr>
-								
-								<!--
-								<tr>
-									<td><h4>Email</h4></td>
-									<td><h4>: {{$model->email}}</h4></td>
-								</tr>
-								<tr>
-									<td><h4>Nomor HP</h4></td>
-									<td><h4>: {{$model->nohp}}</h4></td>
-								</tr>
-								-->
-							</table>
-						</div>
 						
-						<!--
+						
+						
 						<div class="col-md-7">
 							<form class="form-horizontal" action="{{ route('admin.pendaftaran.buka')}}" method="post" enctype="multipart/form-data">
 							{{ csrf_field() }}
@@ -183,7 +139,6 @@
 								</div>
 							</form>
 						</div>
-						-->
 					</div>
                     
                 </div>
