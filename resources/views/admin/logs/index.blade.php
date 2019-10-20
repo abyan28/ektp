@@ -52,17 +52,17 @@
 									@if($model->hasil == 0)
 										Tapping Gagal: Kartu Tidak Dikenal
 									@else
-										@if($model->hasil == 1)
+										@if($model->hasil == 2)
 											Tapping Berhasil: Kartu Dikenal
 										@else
-											@if($model->hasil == 2)
+											@if($model->hasil == 1)
 												Tapping Berhasil: Pendaftaran Berhasil
 											
 											@else	
-												@if($model->hasil == 3)
+												@if($model->hasil == 4)
 													Wajah Tidak Sesuai
 												@else
-													@if($model->hasil == 4)
+													@if($model->hasil == 3)
 														Tapping Berhasil: Kartu dan Wajah Dikenal
 													@endif
 												@endif

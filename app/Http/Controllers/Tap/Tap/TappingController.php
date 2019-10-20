@@ -434,7 +434,7 @@ class TappingController extends Controller
 				{
 					$log->hasil = 4;
 					$log->save();
-					return response()->json(['hasil' => '0', 'string' => 'BPJS Diaktifkan', 'mode' => $mode, 'log' => $log->id]);
+					return response()->json(['hasil' => '0', 'string' => 'Tidak Terdaftar BPJS', 'mode' => $mode, 'log' => $log->id]);
 				}
 					
 				//return response()->json(['hasil' => 'ditemukan', 'data' => $bpjs->batas_pembayaran, 'mode' => $mode]);
@@ -532,7 +532,7 @@ class TappingController extends Controller
 					$transaction->save();
 					$log->hasil = 3;
 					$log->save();
-					return response()->json(['hasil' => '1', 'string' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'log' => $log->id]);
+					return response()->json(['hasil' => '1', 'string' => 'Pendaftaran Bpjs Berhasil', 'mode' => $mode, 'log' => $log->id, 'antri' => $pasien->nomor_antrian]);
 				}
 				else
 				{
