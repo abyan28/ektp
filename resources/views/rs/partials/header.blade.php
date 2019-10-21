@@ -6,9 +6,9 @@
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
       </button>
-	  <ul class="nav navbar-nav ml-auto mr-4">
+	  <!--ul class="nav navbar-nav ml-auto mr-4">
 		<img src="{{url('static/website/img/bpjs.png')}}"style="height: 50px; object-fit:cover;" ></img>
-	</ul>
+	</ul-->
     <ul class="nav navbar-nav ml-auto mr-4">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

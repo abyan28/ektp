@@ -82,8 +82,8 @@
     <li class="breadcrumb-item">
         <a href="{{ route('pasien.index') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item">BPJS</li>
-    <li class="breadcrumb-item active">Pencarian BPJS</li>
+    <!--li class="breadcrumb-item">BPJS</li>
+    <li class="breadcrumb-item active">Pencarian BPJS</li-->
 @stop
 
 @section('content')
@@ -95,7 +95,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-edit"></i>Antrian BPJS Faskes Tingkat 1</div>
+                    <i class="fa fa-edit"></i>Form Diagnosis Pasien</div>
                 <div class="card-body">
                     @if (Session::has('status'))
                         <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
@@ -130,7 +130,7 @@
 							<label for="alamat">Alamat:</label>
 							<input type="text" class="form-control" id="alamat" value = "{{$model->pengguna->alamat}}"readonly></input>
 						</div>
-						<div class="form-group">
+						<!--div class="form-group">
 							<label for="faskes_tingkat1">Faskes Tingkat 1:</label>
 							<input type="text" class="form-control" id="faskes_tingkat1" value = "{{$model->faskes_tingkat1}}"readonly></input>
 						</div>
@@ -141,7 +141,7 @@
 						<div class="form-group">
 							<label for="bpjs">Status Bpjs:</label>
 							<input type="text" class="form-control" id="bpjs" value = "Aktif" readonly></input>
-						</div>
+						</div-->
 					</div>
 					<div class="col-md-6">
 					<form action="{{route('pasien.faskes1.simpan', $model->id)}}" method="post">
@@ -151,13 +151,13 @@
 							<label for="diagnosa">Diagnosa:</label>
 							<textarea class="form-control" rows="5" id="diagnosa" name="diagnosa">{{$model->diagnosa}}</textarea>
 						</div>
-						<div class="form-group">
+						<!--div class="form-group">
 							<label for="rs_rujukan">Rumah Sakit Rujukan:</label>
 							<select class="form-control" id="rs_rujukan" name="rs_rujukan">
 								<option value="">-</option>
 								<option value="RS Mantap" @if($model->rs_rujukan == 'RS Mantap') selected @endif>RS Mantap</option>
 							</select>
-						</div>
+						</div-->
 						<button type="submit" class="btn btn-primary">Simpan</button>
 					
 					</form>

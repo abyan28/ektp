@@ -276,6 +276,8 @@ class TappingController extends Controller
 	
 	public function tapCardMultiPost(Request $request)
 	{
+		$id = $request->id;
+		$uid = $request->uid;
 		$kartu = Kartu::where('uid', '=', $uid)->first();
 		$found = 0;
 		$logs = new Logs();
@@ -302,7 +304,7 @@ class TappingController extends Controller
 			{
 				$logs['hasil'] = 1;
 				$logs->save();
-				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1")
+				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1" || $mode=="checkin")
 				{
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
@@ -322,6 +324,7 @@ class TappingController extends Controller
 					$transaction->save();
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
+				
 				
 				
 			}
@@ -381,12 +384,25 @@ class TappingController extends Controller
 			}
 		}
 		
+		
 	}
 	
 	public function showLogs()
 	{
 		$data['models'] = Logs::latest()->get();
 		return view('admin.logs.index', $data);
+	}
+	public function showAllLogsApi()
+	{
+		$data['models'] = Logs::latest()->get();
+		return response()->json(['hasil' => 'success', 'data' => $data['models']]);
+	}
+	public function showLogApi(Request $request)
+	{
+		$uid = $request->uid;
+		$kartu = Kartu::where('uid', '=', '$uid')->get();
+		$data['models'] = Logs::where('id_nik', '=', $kartu->pengguna->nama)->latest()->get();
+		return response()->json(['hasil' => 'success', 'data' => $data['models']]);
 	}
 	public function sendImages(Request $request)
 	{
@@ -407,6 +423,13 @@ class TappingController extends Controller
 		$log->url_gambar = $path;
 		$log->id_nik = $kartu->pengguna->id_nik;
 		$status = $request->status;
+		
+		if($kartu->pengguna->active == 0)
+		{
+			$log->hasil = 5;
+			$log->save();
+			return response()->json(['hasil' => '0', 'mode' => $mode, 'log' => $log->id, 'string' => 'mismatch']);
+		}
 		
 		if($status == 'ACCEPTED')
 		{

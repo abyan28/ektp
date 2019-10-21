@@ -7,10 +7,10 @@
                 {{--</a>--}}
             {{--</li>--}}
 
-            <li class="nav-title">Faskes I</li>
+            <li class="nav-title">Pasien</li>
 			<li class="nav-item">
                 <a class="nav-link" href="{{ route('pasien.faskes1.index') }}">
-                    <i class="nav-icon icon-globe-alt"></i> Buat Rujukan Bpjs</a>
+                    <i class="nav-icon icon-globe-alt"></i> Pendafataran Pasien</a>
             </li>
 			<li class="nav-item">
                 <a class="nav-link" href="{{ route('pasien.faskes1.formsetantri') }}">
@@ -20,11 +20,11 @@
                 <a class="nav-link" href="{{ route('pasien.faskes1.periksa') }}">
                     <i class="nav-icon icon-globe-alt"></i> Diagnosa Pasien</a>
             </li>
-			<li class="nav-title">Faskes Lanjutan</li>
+			<!--li class="nav-title">Faskes Lanjutan</li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('pasien.index') }}">
                     <i class="nav-icon icon-globe-alt"></i> Pendaftaran Pasien Bpjs</a>
-            </li>
+            </li-->
 			
 			
 			

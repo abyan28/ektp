@@ -13,8 +13,8 @@
     <li class="breadcrumb-item">
         <a href="{{ route('admin.index') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item">BPJS</li>
-    <li class="breadcrumb-item active">Pencarian BPJS</li>
+    <li class="breadcrumb-item">Pengguna</li>
+    <li class="breadcrumb-item active">Pendaftaran Pengguna</li>
 @stop
 
 @section('content')
@@ -26,12 +26,11 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-edit"></i>Data BPJS</div>
+                    <i class="fa fa-edit"></i>Data Pengguna</div>
                 <div class="card-body">
                     @if (Session::has('status'))
                         <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
-                    @endif
-					<div class="alert alert-success" role="alert">Pendaftaran Pasien BPJS Berhasil</div>
+                    @endif	
                     @if ($errors->any())
                         @foreach($errors->all() as $error)
                             <div class="alert alert-danger" role="alert">{{ $error }}</div>

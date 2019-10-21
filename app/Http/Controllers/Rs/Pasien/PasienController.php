@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rs\Pasien;
 use App\Models\Pasien;
 use App\Models\Pengguna;
 use App\Models\Setting;
+use App\Models\Poli;
 use App\Models\Alat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -115,6 +116,8 @@ class PasienController extends Controller
 			$pasien = $pasiens->first();
 			$pasien->nomor_antrian = $nomorantrian;
 			$pasien->status=1;
+			$pasien->poli = $poli;
+			$pasien->save();
 			$setting->save();
 			$pasien->save();
 			
@@ -147,12 +150,15 @@ class PasienController extends Controller
 		$alat = Alat::find($idalat);
 		$alat->mode = "faskes1";
 		$alat->save();
-		return view('rs.pasien.faskes1.index');
+		$data['polis'] = Poli::all();
+		return view('rs.pasien.faskes1.index', $data);
 	}
-	public function faskes1Show($id)
+	public function faskes1Show($poli, $id)
 	{
 		//$pengguna = Pengguna::find($id);
 		$pasien = Pasien::where('pengguna_id', '=', $id)->where('status', '=', -1)->orderBy('created_at', 'desc')->first();
+		$pasien->poli = 2;
+		$pasien->save();
 		$data['model'] = $pasien;
 		return view('rs.pasien.faskes1.show', $data);
 	}

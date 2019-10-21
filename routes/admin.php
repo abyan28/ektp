@@ -13,14 +13,14 @@
 
 Route::resource('/pasien', 'Rs\Pasien\PasienController');
 Route::get('/pasien/load/{id}', 'Rs\Pasien\PasienController@loadPasien')->name('pasien.load');
-Route::get('/pasien/faskes1/index', 'Rs\Pasien\PasienController@faskes1Index')->name('pasien.faskes1.index');
-Route::get('/pasien/faskes1/show/{id}', 'Rs\Pasien\PasienController@faskes1Show')->name('pasien.faskes1.show');
-Route::post('/pasien/faskes1/store', 'Rs\Pasien\PasienController@faskes1Store')->name('pasien.faskes1.store');
-Route::get('/pasien/faskes1/periksa', 'Rs\Pasien\PasienController@faskes1Edit')->name('pasien.faskes1.periksa');
-Route::put('/pasien/faskes1/simpan/{id}', 'Rs\Pasien\PasienController@faskes1Update')->name('pasien.faskes1.simpan');
-Route::post('/pasien/faskes1/setantri', 'Rs\Pasien\PasienController@faskes1SetAntri')->name('pasien.faskes1.setantri');
-Route::get('/pasien/faskes1/formsetantri', 'Rs\Pasien\PasienController@faskes1FormSetAntri')->name('pasien.faskes1.formsetantri');
-Route::get('/pasien/faskes1/getantrian', 'Rs\Pasien\PasienController@getAntrian')->name('pasien.getantrian');
+Route::get('/pasien/daftar/index', 'Rs\Pasien\PasienController@faskes1Index')->name('pasien.faskes1.index');
+Route::get('/pasien/daftar/show/{poli}/{id}', 'Rs\Pasien\PasienController@faskes1Show')->name('pasien.faskes1.show');
+Route::post('/pasien/daftar/store', 'Rs\Pasien\PasienController@faskes1Store')->name('pasien.faskes1.store');
+Route::get('/pasien/daftar/periksa', 'Rs\Pasien\PasienController@faskes1Edit')->name('pasien.faskes1.periksa');
+Route::put('/pasien/daftar/simpan/{id}', 'Rs\Pasien\PasienController@faskes1Update')->name('pasien.faskes1.simpan');
+Route::post('/pasien/daftar/setantri', 'Rs\Pasien\PasienController@faskes1SetAntri')->name('pasien.faskes1.setantri');
+Route::get('/pasien/daftar/formsetantri', 'Rs\Pasien\PasienController@faskes1FormSetAntri')->name('pasien.faskes1.formsetantri');
+Route::get('/pasien/daftar/getantrian', 'Rs\Pasien\PasienController@getAntrian')->name('pasien.getantrian');
 Route::group(['prefix' => 'admin-panel', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {

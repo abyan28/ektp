@@ -13,9 +13,10 @@
     <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}" defer></script>
 	<script>
 	var searchbpjs = 1;
-	var url1 = "{{route('pasien.faskes1.show', -1)}}";
+	var url1 = "{{route('pasien.faskes1.show', ['poli' => '1', 'id' => -1])}}";
 	//alert(url1);
-	var url2 = url1.slice(0, -2);
+	var url2 = url1.slice(0, -4);
+	
 	//alert(url2);
     $(document).ready(function() {
 		
@@ -49,7 +50,8 @@
 					}
 					if(searchbpjs == 1 && $('#pengguna_id').val() != "")
 					{
-						
+						url2 = url2.concat($('#poli').val())
+						url2.concat('//')
 						var url = url2.concat($('#pengguna_id').val().toString());
 						window.location = url;
 							searchbpjs = 0;
@@ -86,7 +88,7 @@
         <a href="{{ route('pasien.index') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">Pasien Baru</li>
-    <li class="breadcrumb-item active">Pendaftaran Pasien BPJS Baru</li>
+    <!--li class="breadcrumb-item active">Pendaftaran Pasien BPJS Baru</li-->
 @stop
 
 @section('content')
@@ -99,6 +101,7 @@
             <div class="card">
 				<input type="hidden" id="pengguna_id" value=""></input>
                 <div class="card-body">
+					
                     @if (Session::has('status'))
                         <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
                     @endif
@@ -107,6 +110,13 @@
                             <div class="alert alert-danger" role="alert">{{ $error }}</div>
                         @endforeach
                     @endif
+					<label for="rs_rujukan">Poli:</label>
+						<select class="form-control" id="poli" name="poli">
+						@foreach($polis as $poli)
+							<option value="{{$poli->id}}">{{$poli->nama}}</option>
+						@endforeach
+						</select>
+						
 					<h3 style="text-align: center">Menunggu Input Kartu Pasien</h3>
 					<img src="{{url('static/website/img/card.png')}}" style="display: block;margin-left: auto;margin-right: auto;"</img>
                 </div>

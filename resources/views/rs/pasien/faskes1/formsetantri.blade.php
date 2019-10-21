@@ -82,8 +82,8 @@
     <li class="breadcrumb-item">
         <a href="{{ route('pasien.index') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item">BPJS</li>
-    <li class="breadcrumb-item active">Pencarian BPJS</li>
+    <!--li class="breadcrumb-item">BPJS</li>
+    <li class="breadcrumb-item active">Pencarian BPJS</li-->
 @stop
 
 @section('content')
@@ -150,7 +150,7 @@
 					</form>
 					<br>
 					<br>
-					<div class="card">
+					<!--div class="card">
 					<div class="card-header">
 						Data Pasien
 					</div>
@@ -166,12 +166,6 @@
 									<td><h5>Nama</h5></td>
 									<td><h5>: {{$model->pengguna->name}}</h5></td>
 								</tr>
-								<!--
-								<tr>
-									<td>NRP</td>
-									<td>: {{$model->pengguna->nrp}}</td>
-								</tr>
-								-->
 								<tr>
 									<td><h5>Jenis Kelamin</h5></td>
 									<td><h5>: {{$model->pengguna->jenis_kelamin}}</h5></td>
@@ -213,38 +207,18 @@
 									<td><h5>: {{$model->nomor_antrian}}</h5></td>
 								</tr>
 								
-								<!--
-								<tr>
-									<td>NRP</td>
-									<td>: {{$model->pengguna->nrp}}</td>
-								</tr>
-								-->
-								<!--tr>
-									<td><h5>Nominal</h5></td>
-									<td><h5>: Rp. 1.000.000,00</h5></td>
-								</tr-->
 								<tr>
 									<td><h5>Status BPJS</h5></td>
 									<td><h5>: Aktif</h5></td>
 								</tr>
 								
-								<!--
-								<tr>
-									<td><h5>Email</h5></td>
-									<td><h5>: {{$model->pengguna->email}}</h5></td>
-								</tr>
-								<tr>
-									<td><h5>Nomor HP</h5></td>
-									<td><h5>: {{$model->pengguna->nohp}}</h5></td>
-								</tr>
-								-->
 							</table>
 						</div>
 						
 						
 					</div>
                    </div>
-                </div>
+                </div-->
 				</div>
             </div>
         </div>

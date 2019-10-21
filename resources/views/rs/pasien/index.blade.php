@@ -86,7 +86,7 @@
         <a href="{{ route('admin.index') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">Pasien Baru</li>
-    <li class="breadcrumb-item active">Pendaftaran Pasien BPJS</li>
+    <li class="breadcrumb-item active">Pendaftaran Pasien Baru</li>
 @stop
 
 @section('content')
@@ -107,6 +107,9 @@
                             <div class="alert alert-danger" role="alert">{{ $error }}</div>
                         @endforeach
                     @endif
+					<div class="form-group">
+					
+					
 					<h3 style="text-align: center">Menunggu Input Kartu Pasien</h3>
 					<img src="{{url('static/website/img/card.png')}}" style="display: block;margin-left: auto;margin-right: auto;"</img>
                 </div>
