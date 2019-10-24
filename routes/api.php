@@ -18,6 +18,7 @@ Route::get('/test', 'Api\Pendaftaran\PendaftaranController@index')->name('api.te
 Route::post('/tap/multi', 'Tap\Tap\TappingController@tapCardMultiPost')->name('api.tap');
 Route::post('/tap/process', 'Tap\Tap\TappingController@sendImages')->name('tap.process');
 Route::post('/tap/mode', 'Tap\Tap\TappingController@getMode')->name('tap.mode');
+Route::post('/transaksi/store', 'Tap\Tap\TappingController@submitTransaction')->name('tap.subtran');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

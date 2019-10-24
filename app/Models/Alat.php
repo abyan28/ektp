@@ -20,4 +20,8 @@ class Alat extends Model
     {
         return $this->hasMany('App\Models\Transaksi');
     }
+	public function parkirs()
+	{
+		return $this->hasMany('App\Models\Parkir');
+	}
 }

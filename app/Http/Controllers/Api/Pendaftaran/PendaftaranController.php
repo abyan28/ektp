@@ -77,9 +77,10 @@ class PendaftaranController extends Controller
 		
 		$upload['password'] = bcrypt($request->password);
 		$upload['status'] = 0;
+		$upload['nrp'] = $request->id_nik;
 		
 		
-		if($pengguna->create($request->except('password', 'status') + $upload))
+		if($pengguna->create($request->except('password', 'status', nrp) + $upload))
 		{
 			return response()->json(['status' => '200', 'hasil' => 'berhasil']);
 		}

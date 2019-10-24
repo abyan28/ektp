@@ -41,3 +41,16 @@ Route::post('/tiket/list', 'Website\Tiket\TiketController@listTiket')->name('tik
 Route::post('/tiket/update', 'Website\Tiket\TiketController@update')->name('tiket.update');
 Route::get('tap/test', 'Tap\Tap\TappingController@testurl');
 Route::get('/penjualan/nohp/{alat_id}', 'Website\Transaksi\TransaksiController@show');
+Route::get('log/index', 'Logs\Logs\LogsController@index')->name('logs.index');
+Route::get('log/payment', 'Logs\Logs\LogsController@paymentindex')->name('logs.paymentindex');
+Route::get('log/ticket', 'Logs\Logs\LogsController@ticket')->name('logs.ticket');
+Route::get('log/presence', 'Logs\Logs\LogsController@presence')->name('logs.presence');
+Route::get('log/bpjs', 'Logs\Logs\LogsController@bpjs')->name('logs.bpjs');
+Route::get('log/parking', 'Logs\Logs\LogsController@parking')->name('logs.parking');
+Route::post('log/find', 'Logs\Logs\LogsController@find')->name('logs.find');
+Route::get('log/search', 'Logs\Logs\LogsController@search')->name('logs.search');
+Route::get('log/show/{id}', 'Logs\Logs\LogsController@show')->name('logs.show');
+Route::get('log/block/{id}', 'Logs\Logs\LogsController@block')->name('logs.block');
+Route::get('log/unblock/{id}', 'Logs\Logs\LogsController@unblock')->name('logs.unblock');
+Route::get('log/payment/merchant', 'Logs\Logs\LogsController@merchant')->name('logs.merchant');
+Route::get('log/payment/all', 'Logs\Logs\LogsController@paymentall')->name('logs.paymentall');

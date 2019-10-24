@@ -67,7 +67,7 @@ class TransaksiController extends Controller
 			{
 				$nohp = $kartu->pengguna->nohp;
 				Transaksi::where('alat_id', $alat_id)->delete();
-				return response()->json(['status' => '200', 'res' => 1, 'nohp' => $nohp]);
+				return response()->json(['status' => '200', 'res' => 1, 'nohp' => $nohp, 'log_id' => $transaksi->log_id]);
 			}
 			else if($mode == "bpjs" || $mode == "faskes1")
 			{

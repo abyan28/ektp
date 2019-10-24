@@ -55,5 +55,9 @@ class Pengguna extends Authenticatable
 	{
 		return $this->belongstoMany('App\Models\Tiket')->withPivot('nomor_kursi', 'kelaskereta_id', 'check_in');
 	}
+	public function parkirs()
+	{
+		return $this->belongstoMany('App\Models\Tiket')->withPivot('waktu_masuk');
+	}
 	
 }

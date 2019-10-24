@@ -116,7 +116,7 @@ class PasienController extends Controller
 			$pasien = $pasiens->first();
 			$pasien->nomor_antrian = $nomorantrian;
 			$pasien->status=1;
-			$pasien->poli = $poli;
+			//$pasien->poli = $poli;
 			$pasien->save();
 			$setting->save();
 			$pasien->save();

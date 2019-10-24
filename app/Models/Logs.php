@@ -18,4 +18,9 @@ class Logs extends Model
         }
         return asset('static/admin/img/default.png');
     }
+	
+	public function logtransaksis()
+	{
+		return $this->hasMany('App\Models\Logtransaksi');
+	}
 }

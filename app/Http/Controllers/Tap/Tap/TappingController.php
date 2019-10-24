@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Pengguna;
 use App\Models\Logs;
+use App\Models\Logparkir;
 use App\Models\Kartu;
 use App\Models\Alat;
 use App\Models\Setting;
 use App\Models\Pasien;
 use App\Models\Pendaftaran;
 use App\Models\Transaksi;
+use App\Models\Logtransaksi;
+use App\Models\Parkir;
 use Carbon\Carbon;
 
 class TappingController extends Controller
@@ -169,7 +172,7 @@ class TappingController extends Controller
 		$kartu = Kartu::where('uid', '=', $uid)->first();
 		$found = 0;
 		$logs = new Logs();
-		if($kartu)
+		if($kartu && $kartu->pengguna->active==1)
 		{
 			$alat = Alat::find($id);
 			$mode = $alat->mode;
@@ -191,13 +194,50 @@ class TappingController extends Controller
 			if($found == 1)
 			{
 				$logs['hasil'] = 1;
-				$logs->save();
+				
 				if($mode == "gembok" || $mode == "absensi" || $mode == "bpjs" || $mode == "faskes1" || $mode=="checkin")
 				{
+					$logs->save();
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
+				}
+				else if($mode == "parkir")
+				{
+					$existparkir = Logs::where('ruangan', '=', $alat->ruang->nama)->where('nama','=',$kartu->pengguna->name)->where('hasil', '=', 1)->where('mode', '=', 'parkir')->get();
+					//return $existparkir;
+					if($existparkir->count() == 0)
+					{
+						$logs->save();
+						$parkir=Parkir::where('alat_id','=',$id)->first();
+						$parkir->kapasitas = $parkir->kapasitas -1;
+						$parkir->save();
+						return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid, 'tipe' => 'masuk']);
+					}
+					else
+					{
+						$parkiraktif = $existparkir->first();
+						//return $parkiraktif;
+						$parkiraktif->hasil=5;
+						$parkiraktif->save();
+						//return $parkiraktif;
+						$hours = $parkiraktif->created_at->diffInHours($parkiraktif->updated_at);
+						$cost = $hours-2;
+						$parkir = Parkir::where('alat_id','=',$id)->first();
+						$parkir->kapasitas = $parkir->kapasitas +1;
+						$parkir->save();
+						if($cost > 2)
+						{
+							$cost = $parkir->harga_dasar + $parkir->harga_tambahan*$cost;
+						}
+						else 
+						{
+							$cost = $parkir->harga_dasar;
+						}
+						return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'cost' => $cost, 'nohp' => $kartu->pengguna->nohp, 'tipe' => 'keluar']);
+					}
 				}
 				else if($mode == "transaksi")
 				{
+					$logs->save();
 					$transaction = Transaksi::where('alat_id', '=', $id)->first();
 					if($transaction)
 					{
@@ -209,6 +249,7 @@ class TappingController extends Controller
 						$transaction->alat_id = $id;
 						$transaction->uid = $uid;
 					}
+					$transaction->log_id = $logs->id;
 					$transaction->save();
 					return response()->json(['hasil' => 'ditemukan', 'data' => $kartu->pengguna, 'mode' => $mode, 'log' => $logs->id, 'uid' => $uid]);
 				}
@@ -587,6 +628,7 @@ class TappingController extends Controller
 									$tiket->pivot->check_in = 1;
 									$tiket->pivot->save();
 									$log->hasil = 3;
+									$log->ruang = $tiket->asal->nama.' - '.$tiket->tujuan->nama;
 									$log->save();
 									return response()->json(['hasil' => '1','checkin' => $tiket->pivot->check_in, 'string' => 'Check In Berhasil', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
 								}
@@ -616,8 +658,7 @@ class TappingController extends Controller
 				$log->save();
 				return response()->json(['hasil' => '1', 'string' => 'Absensi Berhasil', 'mode' => $mode, 'log' => $log->id]);
 			}
-			
-			
+						
 		}
 		else
 		{
@@ -634,6 +675,28 @@ class TappingController extends Controller
 	public function getMode(Request $request)
 	{
 		$alat = Alat::find($request->id);
-		return response()->json(['hasil' => '1', 'mode' => $alat->mode]);
+		if($alat->mode == "parkir")
+		{
+			$parkir = Parkir::where('alat_id', '=', $request->id)->first();
+			return response()->json(['hasil' => '1', 'mode' => $alat->mode, 'kapasitas' => $parkir->kapasitas]);
+		}
+		else
+		{
+			return response()->json(['hasil' => '1', 'mode' => $alat->mode]);
+		}
+		
+	}
+	public function submitTransaction(Request $request)
+	{
+		$log_id = $request->log_id;
+		$nominal = $request->nominal;
+		$usaha_id = $request->usaha_id;
+		$logtransaksi = new Logtransaksi();
+		$logtransaksi->log_id = $log_id;
+		$logtransaksi->nominal = $nominal;
+		$logtransaksi->usaha_id = $usaha_id;
+		$logtransaksi->save();
+		return response()->json(['hasil' => '1', 'text' => 'saved']);
+		
 	}
 }
