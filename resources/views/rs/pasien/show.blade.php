@@ -91,6 +91,10 @@
 									<td><h4>: {{$model->faskes_tingkat1}}</h4></td>
 								</tr>
 								<tr>
+									<td><h4>Poli</h4></td>
+									<td><h4>: {{$model->polipasien->nama}}</h4></td>
+								</tr>
+								<tr>
 									<td><h4>Nomor Antrian</h4></td>
 									<td><h4>: {{$model->nomor_antrian}}</h4></td>
 								</tr>

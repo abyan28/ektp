@@ -53,6 +53,7 @@ class LogsController extends Controller
 	public function paymentindex()
     {
         //
+		
 		return view('logs.content.paymentindex');
     }
 	public function paymentusaha()

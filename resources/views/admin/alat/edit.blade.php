@@ -61,7 +61,7 @@
                                     <option value="gembok" {{ ($model->mode == 'gembok') ? 'selected':'' }}>Buka Pintu</option>
 									<option value="transaksi" {{ ($model->mode == 'transaksi') ? 'selected':'' }}>Transaksi</option>
 									<option value="absensi" {{ ($model->mode == 'absensi') ? 'selected':'' }}>Absensi</option>
-									<option value="bpjs" {{ ($model->mode == 'bpjs') ? 'selected':'' }}>Bpjs</option>
+									<option value="faskes1" {{ ($model->mode == 'faskes1') ? 'selected':'' }}>Pendaftaran Pasien Rumah Sakit</option>
 									<option value="checkin" {{ ($model->mode == 'check in kereta') ? 'selected':'' }}>Check In Kereta</option>									
                                 </select>
                             </div>

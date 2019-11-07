@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('logs.layout')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">
@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> History Tapping
+                    <i class="fa fa-align-justify"></i> History Tapping Smart Parking
                 </div>
                 <div class="card-body">
                     @if (Session::has('status'))
@@ -23,11 +23,11 @@
                         <tr>
                             <th style="width: 20px;">No</th>
 							<th>Nama</th>
-							<th>Ruangan</th>
+							<th>Tempat </th>
 							<th>Tipe Kartu</th>
-                            <th>Waktu Tapping</th>
+                            <th>Waktu Masuk</th>
+							<th>Waktu Keluar</th>
                             <th>UID Kartu</th>
-							<th>Gambar</th>
 							<th>Hasil</th>
                         </tr>
                         </thead>
@@ -36,26 +36,21 @@
                             <tr>
                                 <td>{{ $key+1 }}</td>
 								<td>{{ $model->nama}}<br><span class="text-muted">NIK : {{ $model->id_nik }}</span></td>
-								<td>{{ $model->ruangan}}<br><span class="text-muted">Mode : @if($model->mode == 'faskes1' || $model->mode == 'bpjs') Pendaftaran Rumah Sakit @elseif($model->mode == 'gembok') Buka Pintu @else {{$model->mode }} @endif</span></td>
+								<td>{{ $model->ruangan}}<br><span class="text-muted">Fitur : Smart Parking</span></td>
 								<td>{{ $model->tipe_kartu}}</td>
 								<td>{{ $model->created_at}}</td>
+								<td>@if($model->created_at == $model->updated_at) - @else {{ $model->updated_at}} @endif</td>
                                 <td>
 									{{ $model->uid_kartu}}
-                                </td>
-								<td>
-                                    <div class="thumbnail">
-                                        <img class="img-thumbnail" src="{{ asset($model->showImage()) }}" alt="" style="object-fil:cover;height: 100px;width: 100px;">
-											{{asset($model->showImage())}}
-                                    </div>
                                 </td>
 								<td>
 									@if($model->hasil == 0)
 										Tapping Gagal: Kartu Tidak Dikenal
 									@else
-										@if($model->hasil == 1)
+										@if($model->hasil == 2)
 											Tapping Berhasil: Kartu Dikenal
 										@else
-											@if($model->hasil == 2)
+											@if($model->hasil == 1)
 												Tapping Berhasil: Pendaftaran Berhasil
 											
 											@else	
@@ -64,6 +59,8 @@
 												@else
 													@if($model->hasil == 3)
 														Tapping Berhasil: Kartu dan Wajah Dikenal
+													@elseif($model->hasil == 5)
+														Telah Keluar
 													@endif
 												@endif
 											@endif
@@ -73,7 +70,7 @@
 								
                             </tr>
                         @endforeach
-                        @if ($models->isEmpty())
+                        @if ($models->count()==0)
                             <tr>
                                 <td colspan="5" class="text-center"> <b>Table Was Empty</b> </td>
                             </tr>

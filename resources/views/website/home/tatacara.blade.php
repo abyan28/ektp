@@ -14,7 +14,7 @@
                 <div class="card-body">
                     
 					
-					<h3>Tata Cara Penggunaan Justap</h3>
+					<h3>Tata Cara Penggunaan JusTap</h3>
 					<h4>1. Pendaftaran Biodata</h4>
 					<p>Pilih menu "Pendaftaran" pada website ini, lalu isi form lengkap sesuai KTP dan kumpulkan</p>
 					<h4>2. Pendaftaran Kartu</h4>

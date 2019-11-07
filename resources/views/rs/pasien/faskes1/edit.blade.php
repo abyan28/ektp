@@ -115,7 +115,7 @@
 					<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="name">Name:</label>
+							<label for="name">Nama:</label>
 							<input type="text" class="form-control" id="name" value = "{{$model->pengguna->name}}"readonly></input>
 						</div>
 						<div class="form-group">
@@ -144,6 +144,10 @@
 						</div-->
 					</div>
 					<div class="col-md-6">
+					<div class="form-group">
+							<label for="alamat">Poli:</label>
+							<input type="text" class="form-control" id="poli" value = "{{$model->polipasien->nama}}"readonly></input>
+						</div>
 					<form action="{{route('pasien.faskes1.simpan', $model->id)}}" method="post">
 						{{csrf_field()}}
 						{{ method_field('PUT') }}
@@ -151,7 +155,7 @@
 							<label for="diagnosa">Diagnosa:</label>
 							<textarea class="form-control" rows="5" id="diagnosa" name="diagnosa">{{$model->diagnosa}}</textarea>
 						</div>
-						<!--div class="form-group">
+						<!--iv class="form-group">
 							<label for="rs_rujukan">Rumah Sakit Rujukan:</label>
 							<select class="form-control" id="rs_rujukan" name="rs_rujukan">
 								<option value="">-</option>

@@ -87,7 +87,7 @@
 									<td><h4>: {{$model->diagnosa}}</h4></td>
 								</tr>
 								
-								<!--tr>
+								<tr>
 									<td><h4>Rumah Sakit Rujukan</h4></td>
 									<td><h4>: {{$model->rs_rujukan}}</h4></td>
 								</tr>
@@ -104,7 +104,7 @@
 									<td><h4>: {{$model->nomor_antrian}}</h4></td>
 								</tr>
 								
-								<tr>
+								<!--tr>
 									<td><h4>Status BPJS</h4></td>
 									<td><h4>: Aktif</h4></td>
 								</tr-->

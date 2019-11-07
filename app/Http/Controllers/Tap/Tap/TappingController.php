@@ -430,7 +430,7 @@ class TappingController extends Controller
 	
 	public function showLogs()
 	{
-		$data['models'] = Logs::latest()->get();
+		$data['models'] = Logs::where('mode', 'not', 'parkir')->orderBy('created_at', 'desc')->get();
 		return view('admin.logs.index', $data);
 	}
 	public function showAllLogsApi()
@@ -467,7 +467,7 @@ class TappingController extends Controller
 		
 		if($kartu->pengguna->active == 0)
 		{
-			$log->hasil = 5;
+			$log->hasil = 1;
 			$log->save();
 			return response()->json(['hasil' => '0', 'mode' => $mode, 'log' => $log->id, 'string' => 'mismatch']);
 		}
@@ -628,7 +628,7 @@ class TappingController extends Controller
 									$tiket->pivot->check_in = 1;
 									$tiket->pivot->save();
 									$log->hasil = 3;
-									$log->ruang = $tiket->asal->nama.' - '.$tiket->tujuan->nama;
+									$log->ruangan = $tiket->asal->nama.' - '.$tiket->tujuan->nama;
 									$log->save();
 									return response()->json(['hasil' => '1','checkin' => $tiket->pivot->check_in, 'string' => 'Check In Berhasil', 'mode' => $mode, 'log' => $log->id, 'uid' => $uid]);
 								}
@@ -662,7 +662,7 @@ class TappingController extends Controller
 		}
 		else
 		{
-			$log->hasil = 2;
+			$log->hasil = 1;
 			$log->save();
 			return response()->json(['hasil' => '0', 'mode' => $mode, 'log' => $log->id, 'string' => 'mismatch']);
 		}

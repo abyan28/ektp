@@ -52,7 +52,7 @@
 					{
 						url2 = url2.concat($('#poli').val())
 						url2 = url2.concat('/')
-						alert(url2)
+						//alert(url2)
 						var url = url2.concat($('#pengguna_id').val().toString());
 						window.location = url;
 							searchbpjs = 0;
@@ -118,7 +118,7 @@
 						@endforeach
 						</select>
 						
-					<h3 style="text-align: center">Menunggu Input Kartu Pasien BPJS</h3>
+					<h3 style="text-align: center">Menunggu Input Kartu Pasien</h3>
 					<img src="{{url('static/website/img/card.png')}}" style="display: block;margin-left: auto;margin-right: auto;"</img>
                 </div>
             </div>

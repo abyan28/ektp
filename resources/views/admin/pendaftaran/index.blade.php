@@ -116,7 +116,6 @@
 												<label for="tipe">Tipe Kartu Yang Didaftarkan:</label>
 												<select class="form-control" id="tipe" name="tipe" required>
 													<option value="">Silahkan Pilih Jenis Kartu</option>
-													<option value="KTM">KTM</option>
 													<option value="KTP">KTP</option>
 													<option value="Lainnya">Lainnya</option>
 												</select>

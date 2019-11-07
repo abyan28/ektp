@@ -17,7 +17,7 @@
 					@if (Session::has('status'))
                         <div class="alert alert-{{ session('status') }}" role="alert">{{ session('message') }}</div>
                     @endif
-                    <h3>Welcome to Justap</h3>
+                    <h3>Welcome to JusTap</h3>
 					
                 </div>
             </div>

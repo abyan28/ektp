@@ -12,7 +12,6 @@ class Logs extends Model
 	
 	public function showImage ()
     {
-		return "storage/$this->url_gambar";
         if (Storage::exists($this->url_gambar)) {
             return "storage/$this->url_gambar";
         }

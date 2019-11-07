@@ -157,15 +157,18 @@ class PasienController extends Controller
 	{
 		//$pengguna = Pengguna::find($id);
 		$pasien = Pasien::where('pengguna_id', '=', $id)->where('status', '=', -1)->orderBy('created_at', 'desc')->first();
-		$pasien->poli = 2;
+		$pasien->poli = $poli;
 		$pasien->save();
 		$data['model'] = $pasien;
+		$data['rekams'] = $pasien = Pasien::where('pengguna_id', '=', $id)->where('diagnosa', 'NOT', 'NULL')->get();
 		return view('rs.pasien.faskes1.show', $data);
 	}
 	public function faskes1Edit()
 	{
 		$antri = Setting::first()->nomor_antrian;
+		//return $antri;
 		$data['model'] = Pasien::where('nomor_antrian', '=', $antri)->first();
+		//return $data;
 		$data['setting'] = Setting::first();
 		return view('rs.pasien.faskes1.edit', $data);
 	}
@@ -196,6 +199,7 @@ class PasienController extends Controller
 		
 		
 		$pasien = Pasien::find($id);
+		
 		//return $pasien;
 		$pasien->diagnosa = $request->diagnosa;
 		$pasien->rs_rujukan = $request->rs_rujukan;

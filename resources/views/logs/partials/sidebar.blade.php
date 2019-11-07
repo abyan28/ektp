@@ -25,7 +25,7 @@
                     <i class="nav-icon icon-globe-alt"></i> Log Smart Ticket</a>
             </li>
 			<li class="nav-item">
-                <a class="nav-link" href="{{ route('logs.presence') }}">
+                <a class="nav-link" href="http://etc.if.its.ac.id/absenKuliah/JT1">
                     <i class="nav-icon icon-globe-alt"></i> Log Smart Presence</a>
             </li>
 			<li class="nav-item">

@@ -196,7 +196,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card h-100">
-                <div class="card-header">Daftar GO-Tap</div>
+                <div class="card-header">Daftar JusTap</div>
 
                 <div class="card-body">
 					@if (Session::has('status'))

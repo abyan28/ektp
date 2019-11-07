@@ -20,7 +20,7 @@
 						</div>
 						@endforeach
 					@endif
-					<h3>Tentang Justap</h3>
+					<h3>Tentang JusTap</h3>
                 </div>
             </div>
         </div>

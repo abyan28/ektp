@@ -30,7 +30,7 @@
 					<br>
 					<div class="row">
 					<div class="col-md-6">
-					<a class="btn btn-primary" href="{{route('logs.presence')}}">Smart Presence</a>
+					<a class="btn btn-primary" href="http://etc.if.its.ac.id/absenKuliah/JT1">Smart Presence</a>
 					</div>
 					<div class="col-md-6">
 					<a class="btn btn-primary" href="{{route('logs.bpjs')}}">Smart BPJS</a>

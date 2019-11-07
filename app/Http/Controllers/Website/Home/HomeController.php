@@ -12,6 +12,7 @@ use App\Models\Pengguna;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 class HomeController extends Controller
 {
     //
@@ -72,7 +73,15 @@ class HomeController extends Controller
 			'email' => "required",
 			'password' => "required"
 		];
-		
+		$client = new Client();
+		$result = $client->post('etc.if.its.ac.id/api/gotap/register',
+		['form_params' => 
+			['uid' => 'lol', 
+			'password' => $request->password, 
+			'telp' => $request->nohp, 
+			'email' => $request->email, 
+			'name' => $request->name, 
+			'idUser' => $request->id_nik]]);
 		$validator = Validator::make($request->all(), $rules, $messages, $attributes);
 		if ($validator->fails()) {
             return redirect()->route('landing.daftar')
@@ -86,9 +95,10 @@ class HomeController extends Controller
 		
 		$upload['password'] = bcrypt($request->password);
 		$upload['status'] = 0;
+		$upload['nrp'] = $request->id_nik;
 		
 		
-		if($this->pengguna->create($request->except('password', 'status') + $upload))
+		if($this->pengguna->create($request->except('password', 'status', 'nrp') + $upload))
 		{
 			return redirect()->route('landing.index')->with(['status' => 'success', 'message' => 'Pendaftaran Biodata Berhasil']);
 		}

@@ -6,10 +6,6 @@
     </li>
     <li class="breadcrumb-item active">Alat</li>
     <li class="breadcrumb-menu d-md-down-none">
-        <div class="btn-group" role="group" aria-label="Button group">
-            <a class="btn" href="{{ route('admin.alat.create') }}">
-                <i class="icon-plus"></i>  Add Alat</a>
-        </div>
     </li>
 @stop
 
@@ -19,7 +15,6 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Data Alat
-                    <a href="{{ route('admin.alat.create') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Alat</a>
                 </div>
                 <div class="card-body">
                     @if (Session::has('status'))
@@ -46,7 +41,7 @@
                                     <span>{{ $model->ruang->nama }} </span>
                                 </td>
                                 <td>
-                                     <span>{{ $model->mode }} </span>
+                                     <span>@if($model->mode == 'faskes1' || $model->mode == 'bpjs') Pendaftaran Rumah Sakit @elseif($model->mode == 'gembok') Buka Pintu @else {{$model->mode }} @endif </span>
                                 </td>
                                 <td>
                                     <!-- /btn-group-->
@@ -54,11 +49,7 @@
                                         <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
                                             <a class="dropdown-item" href="{{ route('admin.alat.edit', $model->id) }}">Edit</a>
-                                            <form action="{{ route('admin.alat.destroy', $model->id) }}" method="post">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <button class="dropdown-item">Delete</button>
-                                            </form>
+                                            
                                         </div>
                                     </div>
                                     <!-- /btn-group-->
